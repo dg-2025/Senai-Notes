@@ -37,5 +37,5 @@ create table notes.nota (
 	ultima_edicao TIMESTAMPTZ
 );
 
-
+select * from notes.usuario
 

@@ -16,14 +16,14 @@ public class Nota {
     @Column(name = "id_nota", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private Usuario idUsuario;
 
     @Column(name = "titulo", nullable = false, length = Integer.MAX_VALUE)
     private String titulo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tag")
     private Tag idTag;
 

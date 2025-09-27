@@ -1,5 +1,6 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.service.NotaService;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +38,14 @@ public class NotaController {
 
     //Adicionar Nota
     @PostMapping
-    public ResponseEntity<?> cadastrarNota(@RequestBody Nota newNota) {
+    public ResponseEntity<?> cadastrarNota(@RequestBody NotaRequest newNota) {
         notaService.adiconarNota(newNota);
         return ResponseEntity.ok().body("Nota adicionada com sucesso");
     }
 
     //Editar / Atualizar nota
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarNota(@PathVariable int id, @RequestBody Nota newNota) {
+    public ResponseEntity<?> atualizarNota(@PathVariable int id, @RequestBody NotaRequest newNota) {
         Nota notaExistente = notaService.atualizarNota(newNota, id);
         if (notaExistente == null) {
             return ResponseEntity.badRequest().body("Nota não encontrada");

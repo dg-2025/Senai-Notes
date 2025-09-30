@@ -1,6 +1,6 @@
 package com.senai_notes.senai_notes.service;
 
-import com.senai_notes.senai_notes.dto.NotaListarDTO;
+import com.senai_notes.senai_notes.dto.NotaResponse;
 import com.senai_notes.senai_notes.dto.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.models.Tag;
@@ -34,31 +34,46 @@ public class NotaService {
     }
 
     //listar Notas por Email
-    public List<NotaListarDTO> listarNotasUsuarios(String email) {
+    public List<NotaResponse> listarNotasUsuarios(String email) {
         List<Nota> notas = notaRepository.findByIdUsuarioEmail(email);
         return notas.stream()
                 .map(this::converterParaListagemDTO)
                 .collect(Collectors.toList());
 
     }
-    private NotaListarDTO converterParaListagemDTO(Nota nota) {
-        NotaListarDTO dto = new NotaListarDTO();
+    private NotaResponse converterParaListagemDTO(Nota nota) {
+        NotaResponse dto = new NotaResponse();
 
             dto.setEmail(nota.getIdUsuario().getEmail());
             dto.setDescricao(nota.getDescricao());
             dto.setImagem(nota.getImagem());
             dto.setTitulo(nota.getTitulo());
-            dto.setUsuario(nota.getIdUsuario().getNome());
-            dto.setTag(nota.getIdTag().getNome());
             return dto;
     }
 
+    //buscar or id (list)
+    public List<NotaResponse> bucarPorIdlist(Integer id){
+        List<Nota> notas = notaRepository.findByIdUsuario_id(id);
+        return notas.stream()
+                .map(this::converterParaListagemDTOlist)
+                .collect(Collectors.toList());
+    }
+    private NotaResponse converterParaListagemDTOlist(Nota nota) {
+        NotaResponse dto = new NotaResponse();
 
+        dto.setEmail(nota.getIdUsuario().getEmail());
+        dto.setDescricao(nota.getDescricao());
+        dto.setImagem(nota.getImagem());
+        dto.setTitulo(nota.getTitulo());
+        return dto;
+    }
 
     //buscar por id
     public Nota bucarPorId(int id){
         return notaRepository.findById(id).orElse(null);
     }
+
+
 
     //adicionar nota
     public Nota adiconarNota(NotaRequest dto){

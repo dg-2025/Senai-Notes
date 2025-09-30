@@ -1,15 +1,12 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.CadastroTagDTO;
 import com.senai_notes.senai_notes.models.Tag;
 import com.senai_notes.senai_notes.service.TagService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-
-
-
 
 @RestController
 @RequestMapping("/api/tag")
@@ -39,8 +36,8 @@ public class TagController {
     }
     //Adicionar Tag
     @PostMapping
-    public ResponseEntity<?> cadastrarTag(@RequestBody Tag newTag) {
-        tagService.adiconarTag(newTag);
+    public ResponseEntity<?> cadastrarTag(@RequestBody CadastroTagDTO newTag) {
+        tagService.adicionarTag(newTag);
         return ResponseEntity.ok().body("Tag adicionada com sucesso");
     }
     //Editar & Atualizar Tag

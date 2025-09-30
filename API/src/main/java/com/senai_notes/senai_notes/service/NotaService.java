@@ -1,5 +1,6 @@
 package com.senai_notes.senai_notes.service;
 
+import com.senai_notes.senai_notes.dto.NotaListarDTO;
 import com.senai_notes.senai_notes.dto.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.models.Tag;
@@ -10,7 +11,7 @@ import com.senai_notes.senai_notes.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @Service
 public class NotaService {
@@ -32,10 +33,27 @@ public class NotaService {
         return notaRepository.findAll();
     }
 
-    //listar
-    public List<Tag> listarnotaEmail(String email) {
-        return tagRepository.findByUsuarioEmail(email);
+    //listar Notas por Email
+    public List<NotaListarDTO> listarNotasUsuarios(String email) {
+        List<Nota> notas = notaRepository.findByIdUsuarioEmail(email);
+        return notas.stream()
+                .map(this::converterParaListagemDTO)
+                .collect(Collectors.toList());
+
     }
+    private NotaListarDTO converterParaListagemDTO(Nota nota) {
+        NotaListarDTO dto = new NotaListarDTO();
+
+            dto.setEmail(nota.getIdUsuario().getEmail());
+            dto.setDescricao(nota.getDescricao());
+            dto.setImagem(nota.getImagem());
+            dto.setTitulo(nota.getTitulo());
+            dto.setUsuario(nota.getIdUsuario().getNome());
+            dto.setTag(nota.getIdTag().getNome());
+            return dto;
+    }
+
+
 
     //buscar por id
     public Nota bucarPorId(int id){

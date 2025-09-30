@@ -8,5 +8,4 @@ import java.util.List;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-    List<Tag> findByUsuarioEmail(String email);
 }

@@ -1,8 +1,12 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.NotaListarDTO;
 import com.senai_notes.senai_notes.dto.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
+import com.senai_notes.senai_notes.models.Tag;
+import com.senai_notes.senai_notes.models.Usuario;
 import com.senai_notes.senai_notes.service.NotaService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +30,19 @@ public class NotaController {
         return ResponseEntity.ok(notas);
     }
 
+    //listar nota por email
+    @GetMapping("/nota-por-email/{email}")
+    @Operation (
+            summary = "mostar notas do usuario logado"
+    )
+    public ResponseEntity<List<NotaListarDTO>> listarNotas(@PathVariable String email) {
+        List<NotaListarDTO> usuarioNota = notaService.listarNotasUsuarios(email);
+        return ResponseEntity.ok(usuarioNota);
+    }
+
+
     //buscar por id
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity<?> buscarNota(@PathVariable int id) {
         Nota notaExistente = notaService.bucarPorId(id);
         if (notaExistente == null) {

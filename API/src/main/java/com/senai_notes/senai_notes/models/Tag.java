@@ -18,7 +18,7 @@ public class Tag {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
-    private Usuario idUsuario;
+    private Usuario usuario;
 
     @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
     private String nome;

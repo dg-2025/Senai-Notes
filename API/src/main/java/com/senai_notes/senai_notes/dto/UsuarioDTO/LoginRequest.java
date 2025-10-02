@@ -1,4 +1,4 @@
-package com.senai_notes.senai_notes.dto;
+package com.senai_notes.senai_notes.dto.UsuarioDTO;
 
 import lombok.Data;
 

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface  TagRepository extends JpaRepository<Tag,Integer> {
+public interface TagRepository extends JpaRepository<Tag, Integer> {
 
-    //Lista TAG por EMAIL
+    // Listar tags por e-mail do usuário
     List<Tag> findByUsuarioEmail(String email);
 
+
 }
+

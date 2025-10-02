@@ -1,7 +1,7 @@
 package com.senai_notes.senai_notes.service;
 
-import com.senai_notes.senai_notes.dto.NotaResponse;
-import com.senai_notes.senai_notes.dto.NotaRequest;
+import com.senai_notes.senai_notes.dto.notaDTO.NotaResponse;
+import com.senai_notes.senai_notes.dto.notaDTO.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.models.Tag;
 import com.senai_notes.senai_notes.models.Usuario;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class NotaService {
 
-    //injeção de dependencias
+    // injeção de dependências
     private final NotaRepository notaRepository;
     private final TagRepository tagRepository;
     private final UsuarioRepository usuarioRepository;
@@ -27,115 +27,95 @@ public class NotaService {
         this.usuarioRepository = usuarioRepository;
     }
 
-
-    //listar
+    // listar todas as notas
     public List<Nota> listarNotas() {
         return notaRepository.findAll();
     }
 
-    //listar Notas por Email
-    public List<NotaResponse> listarNotasUsuarios(String email) {
+    // listar notas por e-mail do usuário
+    public List<NotaResponse> listarNotasPorEmail(String email) {
         List<Nota> notas = notaRepository.findByIdUsuarioEmail(email);
         return notas.stream()
-                .map(this::converterParaListagemDTO)
+                .map(this::converterParaDTO)
                 .collect(Collectors.toList());
-
-    }
-    private NotaResponse converterParaListagemDTO(Nota nota) {
-        NotaResponse dto = new NotaResponse();
-
-            dto.setEmail(nota.getIdUsuario().getEmail());
-            dto.setDescricao(nota.getDescricao());
-            dto.setImagem(nota.getImagem());
-            dto.setTitulo(nota.getTitulo());
-            return dto;
     }
 
-    //buscar or id (list)
-    public List<NotaResponse> bucarPorIdlist(Integer id){
+    // listar notas por ID do usuário
+    public List<NotaResponse> listarNotasPorUsuarioId(Integer id) {
         List<Nota> notas = notaRepository.findByIdUsuario_id(id);
         return notas.stream()
-                .map(this::converterParaListagemDTOlist)
+                .map(this::converterParaDTO)
                 .collect(Collectors.toList());
     }
-    private NotaResponse converterParaListagemDTOlist(Nota nota) {
-        NotaResponse dto = new NotaResponse();
 
-        dto.setEmail(nota.getIdUsuario().getEmail());
-        dto.setDescricao(nota.getDescricao());
-        dto.setImagem(nota.getImagem());
-        dto.setTitulo(nota.getTitulo());
-        return dto;
-    }
-
-    //buscar por id
-    public Nota bucarPorId(int id){
+    // buscar nota por ID (única)
+    public Nota buscarPorId(int id) {
         return notaRepository.findById(id).orElse(null);
     }
 
-
-
-    //adicionar nota
-    public Nota adiconarNota(NotaRequest dto){
-
-        Tag tagAssocioda = tagRepository.findById(dto.getIdTag()).orElse(null);
-        if(tagAssocioda == null){
+    // adicionar nova nota
+    public Nota adicionarNota(NotaRequest dto) {
+        Tag tag = tagRepository.findById(dto.getIdTag()).orElse(null);
+        if (tag == null) {
             return null;
         }
 
-        Usuario usuarioAssosciada = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
-        if(usuarioAssosciada == null){
+        Usuario usuario = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
+        if (usuario == null) {
             return null;
         }
 
         Nota nota = new Nota();
-
-        nota.setDescricao(dto.getDescricao());
         nota.setTitulo(dto.getTitulo());
+        nota.setDescricao(dto.getDescricao());
         nota.setImagem(dto.getImagem());
-        nota.setIdTag(tagAssocioda);
-        nota.setIdUsuario(usuarioAssosciada);
+        nota.setIdTag(tag);
+        nota.setIdUsuario(usuario);
 
         return notaRepository.save(nota);
     }
 
-    //atualizar nota / editar nota
-    public Nota atualizarNota(NotaRequest dto, int id){
-        Tag tagAssocioda = tagRepository.findById(dto.getIdTag()).orElse(null);
-        if(tagAssocioda == null){
+    // atualizar nota existente
+    public Nota atualizarNota(NotaRequest dto, int id) {
+        Nota notaExistente = buscarPorId(id);
+        if (notaExistente == null) {
             return null;
         }
 
-        Usuario usuarioAssosciada = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
-        if(usuarioAssosciada == null){
+        Tag tag = tagRepository.findById(dto.getIdTag()).orElse(null);
+        Usuario usuario = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
+
+        if (tag == null || usuario == null) {
             return null;
         }
 
-        Nota notaExistente = this.bucarPorId(id);
-        if (notaExistente == null){
-            return null;
-        }
-
-        notaExistente.setDescricao(dto.getDescricao());
         notaExistente.setTitulo(dto.getTitulo());
+        notaExistente.setDescricao(dto.getDescricao());
         notaExistente.setImagem(dto.getImagem());
-        notaExistente.setIdTag(tagAssocioda);
-        notaExistente.setIdUsuario(usuarioAssosciada);
-
-
+        notaExistente.setIdTag(tag);
+        notaExistente.setIdUsuario(usuario);
 
         return notaRepository.save(notaExistente);
     }
 
-    //deletar nota
-    public Nota removerNota(int id){
-        Nota notaExistente = this.bucarPorId(id);
-        if (notaExistente == null){
+    // remover nota
+    public Nota removerNota(int id) {
+        Nota nota = buscarPorId(id);
+        if (nota == null) {
             return null;
         }
-        notaRepository.delete(notaExistente);
-        return notaExistente;
+
+        notaRepository.delete(nota);
+        return nota;
     }
 
+    // converter Nota → NotaResponse DTO
+    private NotaResponse converterParaDTO(Nota nota) {
+        NotaResponse dto = new NotaResponse();
+        dto.setEmail(nota.getIdUsuario().getEmail());
+        dto.setTitulo(nota.getTitulo());
+        dto.setDescricao(nota.getDescricao());
+        dto.setImagem(nota.getImagem());
+        return dto;
+    }
 }
-

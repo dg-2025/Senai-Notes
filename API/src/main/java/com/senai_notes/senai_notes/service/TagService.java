@@ -4,6 +4,7 @@ import com.senai_notes.senai_notes.dto.CadastroTagDTO;
 import com.senai_notes.senai_notes.models.Tag;
 import com.senai_notes.senai_notes.models.Usuario;
 import com.senai_notes.senai_notes.repository.TagRepository;
+import com.senai_notes.senai_notes.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -14,9 +15,10 @@ public class TagService {
 
     //injeção de dependencias
     private final TagRepository tagRepository;
-    // private final UsuarioRepository usuarioRepository;
-    public TagService(TagRepository tagRepository) {
+    private final UsuarioRepository usuarioRepository;
+    public TagService(TagRepository tagRepository, UsuarioRepository usuarioRepository) {
         this.tagRepository = tagRepository;
+        this.usuarioRepository = usuarioRepository;
     }
     //listar Tag
     public List<Tag> listarTag() {
@@ -29,17 +31,16 @@ public class TagService {
     //Adicionar Tag
     public Tag adicionarTag(CadastroTagDTO dto){
         // Encontrar o usuario
-        // TODO: Usuario u = usuarioRepository.findById(dto.getUsuarioId());
+        Usuario u = usuarioRepository.getReferenceById(dto.getUsuarioId());
 
 
         Tag tag = new Tag();
 
         tag.setNome(dto.getNome());
-        tag.setDescricao(dto.getDescricao());
         tag.setDataCriacao(OffsetDateTime.now());
 
         // Passar o usuario que encontrei pra Tag
-        // TODO: tag.setUsuario(u);
+        tag.setUsuario(u);
 
         return tagRepository.save(tag);
     }

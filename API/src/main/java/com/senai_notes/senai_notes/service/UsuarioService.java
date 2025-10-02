@@ -70,7 +70,7 @@ public class UsuarioService {
         return usuario;
     }
 
-    // Conversor de Usuario → UsuarioResponse
+    // Conversor de Usuario  UsuarioResponse
     public UsuarioResponse converterParaResponse(Usuario usuario) {
         UsuarioResponse dto = new UsuarioResponse();
         dto.setId(usuario.getId());

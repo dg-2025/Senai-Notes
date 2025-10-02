@@ -17,10 +17,6 @@ public class UsuarioService {
         usuarioRepository = repo;
     }
 
-    public List<Usuario> listarTodos() {
-        return usuarioRepository.findAll();
-    }
-
     public Usuario cadastrarUsuario(Usuario usu) {
         return usuarioRepository.save(usu);
     }
@@ -30,18 +26,17 @@ public class UsuarioService {
     }
 
 
-    public class UsuarioService {
 
-            public List<ListarUsuarioDTO> listarTodos() {
-            // 1. Busca todas as entidades do banco
-            List<Usuario> usuarios = usuarioRepository.findAll();
+        public List<ListarUsuarioDTO> listarTodos() {
+        // 1. Busca todas as entidades do banco
+        List<Usuario> usuarios = usuarioRepository.findAll();
 
-            // 2. Mapeia a lista de Entidades para uma lista de DTOs
-            return usuarios.stream()
-                    // Usa o método auxiliar de conversão
-                    .map(this::converterParaListagemDTO)
-                    .collect(Collectors.toList());
-        }
+        // 2. Mapeia a lista de Entidades para uma lista de DTOs
+        return usuarios.stream()
+                // Usa o método auxiliar de conversão
+                .map(this::converterParaListagemDTO)
+                .collect(Collectors.toList());
+    }
 
         private ListarUsuarioDTO converterParaListagemDTO(Usuario usuario) {
             ListarUsuarioDTO dto = new ListarUsuarioDTO();
@@ -53,12 +48,6 @@ public class UsuarioService {
 
             return dto;
         }
-    }
-
-    }
-
-
-
 
     public Usuario deletarUsuario(Integer id) {
         Usuario usuario = buscarPorId(id);

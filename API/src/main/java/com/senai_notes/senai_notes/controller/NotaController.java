@@ -1,7 +1,7 @@
 package com.senai_notes.senai_notes.controller;
 
-import com.senai_notes.senai_notes.dto.NotaResponse;
-import com.senai_notes.senai_notes.dto.NotaRequest;
+import com.senai_notes.senai_notes.dto.notaDTO.NotaResponse;
+import com.senai_notes.senai_notes.dto.notaDTO.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.service.NotaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,69 +12,71 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notas")
-
 public class NotaController {
 
-    //injeção de dependencias
+    // Injeção de dependências
     private final NotaService notaService;
+
     public NotaController(NotaService notaService) {
         this.notaService = notaService;
     }
 
-    //listar todos
+    // Listar todas as notas
     @GetMapping
     public ResponseEntity<List<Nota>> listarNotas() {
         List<Nota> notas = notaService.listarNotas();
         return ResponseEntity.ok(notas);
     }
 
-    //listar nota por email
+    // Listar notas pelo e-mail do usuário
     @GetMapping("/nota-por-email/{email}")
-    @Operation (
-            summary = "mostar notas do usuario logado"
-    )
-    public ResponseEntity<List<NotaResponse>> listarNotas(@PathVariable String email) {
-        List<NotaResponse> usuarioNota = notaService.listarNotasUsuarios(email);
+    @Operation(summary = "Mostrar notas do usuário logado pelo e-mail")
+    public ResponseEntity<List<NotaResponse>> listarNotasPorEmail(@PathVariable String email) {
+        List<NotaResponse> usuarioNota = notaService.listarNotasPorEmail(email);
         return ResponseEntity.ok(usuarioNota);
     }
 
-
-    //buscar por id
+    // Buscar notas por ID do usuário
     @GetMapping("/buscarporid/{id}")
-    public ResponseEntity<List<?>> buscarNota(@PathVariable Integer id) {
-        List<NotaResponse> notaExistente = notaService.bucarPorIdlist(id);
-        if (notaExistente == null) {
-            return ResponseEntity.badRequest().build();
+    @Operation(summary = "Buscar notas por ID do usuário")
+    public ResponseEntity<List<NotaResponse>> buscarNotasPorIdUsuario(@PathVariable Integer id) {
+        List<NotaResponse> notas = notaService.listarNotasPorUsuarioId(id);
+        if (notas == null || notas.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(notaExistente);
+        return ResponseEntity.ok(notas);
     }
 
-    //Adicionar Nota
+    // Adicionar uma nova nota
     @PostMapping
-    public ResponseEntity<?> cadastrarNota(@RequestBody NotaRequest newNota) {
-        notaService.adiconarNota(newNota);
-        return ResponseEntity.ok().body("Nota adicionada com sucesso");
+    @Operation(summary = "Cadastrar uma nova nota")
+    public ResponseEntity<?> cadastrarNota(@RequestBody NotaRequest novaNota) {
+        Nota notaCriada = notaService.adicionarNota(novaNota);
+        if (notaCriada == null) {
+            return ResponseEntity.badRequest().body("Erro ao adicionar nota. Verifique os dados enviados.");
+        }
+        return ResponseEntity.ok("Nota adicionada com sucesso");
     }
 
-    //Editar / Atualizar nota
+    // Editar / Atualizar uma nota
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarNota(@PathVariable int id, @RequestBody NotaRequest newNota) {
-        Nota notaExistente = notaService.atualizarNota(newNota, id);
-        if (notaExistente == null) {
+    @Operation(summary = "Atualizar uma nota existente")
+    public ResponseEntity<?> atualizarNota(@PathVariable int id, @RequestBody NotaRequest novaNota) {
+        Nota notaAtualizada = notaService.atualizarNota(novaNota, id);
+        if (notaAtualizada == null) {
             return ResponseEntity.badRequest().body("Nota não encontrada");
         }
-        return ResponseEntity.ok().body("Nota atualizada com sucesso");
+        return ResponseEntity.ok("Nota atualizada com sucesso");
     }
 
-    //Deletar nota
+    // Deletar uma nota
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remover uma nota pelo ID")
     public ResponseEntity<?> removerNota(@PathVariable int id) {
-        Nota notaExistente = notaService.removerNota(id);
-        if (notaExistente == null) {
+        Nota notaRemovida = notaService.removerNota(id);
+        if (notaRemovida == null) {
             return ResponseEntity.badRequest().body("Nota não encontrada");
         }
-        notaService.removerNota(id);
-        return ResponseEntity.ok().body(notaExistente);
+        return ResponseEntity.ok("Nota removida com sucesso");
     }
-
 }

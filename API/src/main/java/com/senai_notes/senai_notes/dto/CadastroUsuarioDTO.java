@@ -10,5 +10,6 @@ import java.time.OffsetDateTime;
 public class CadastroUsuarioDTO {
     private String nome;
     private String email;
+    private String senha;
     private OffsetDateTime dataCriacao;
 }

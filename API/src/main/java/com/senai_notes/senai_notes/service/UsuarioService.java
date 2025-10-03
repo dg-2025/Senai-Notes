@@ -1,5 +1,6 @@
 package com.senai_notes.senai_notes.service;
 
+import com.senai_notes.senai_notes.dto.UsuarioDTO.LoginRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioResponse;
 import com.senai_notes.senai_notes.models.Usuario;
@@ -35,6 +36,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElse(null);
     }
 
+    // Buscar por email
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElse(null);
+    }
+
+
     // Cadastrar novo usuário
     public Usuario cadastrarUsuario(UsuarioRequest dto) {
         Usuario usuario = new Usuario();
@@ -46,6 +53,8 @@ public class UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
+
+
 
     // Atualizar usuário existente
     public Usuario atualizarUsuario(Integer id, UsuarioRequest dto) {

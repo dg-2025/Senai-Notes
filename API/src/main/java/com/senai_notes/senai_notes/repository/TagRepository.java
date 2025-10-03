@@ -13,6 +13,5 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
     // Listar tags por e-mail do usuário
     List<Tag> findByUsuarioEmail(String email);
 
-
 }
 

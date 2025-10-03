@@ -27,7 +27,7 @@ public class Usuario implements UserDetails {
     @Column(name = "email", nullable = false, length = Integer.MAX_VALUE)
     private String email;
 
-    @Column(name = "senha", nullable = false, length = 255)
+    @Column(name = "senha", nullable = false, length = Integer.MAX_VALUE)
     private String senha;
 
     @Column(name = "data_criacao")

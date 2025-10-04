@@ -37,8 +37,12 @@ public class UsuarioService {
     }
 
     // Buscar por email
-    public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElse(null);
+    public UsuarioResponse buscarPorEmail(String email) {
+        Usuario usuarioExistente = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioExistente == null) return null;
+
+        return  converterParaResponse(usuarioExistente);
+
     }
 
 

@@ -5,6 +5,7 @@ import com.senai_notes.senai_notes.dto.notaDTO.NotaRequest;
 import com.senai_notes.senai_notes.models.Nota;
 import com.senai_notes.senai_notes.service.NotaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notas")
+@SecurityRequirement(name = "bearerAuth")
 public class NotaController {
 
     // Injeção de dependências

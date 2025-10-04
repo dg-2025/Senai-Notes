@@ -1,10 +1,12 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.UsuarioDTO.LoginResponse;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioResponse;
 import com.senai_notes.senai_notes.models.Usuario;
 import com.senai_notes.senai_notes.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -31,25 +34,31 @@ public class UsuarioController {
         this.authenticationManager = authenticationManager;
     }
 
+
+
+
     //Metodo de login
     @PostMapping("/api/auth")
     @Operation(summary = "metodo de login")
-    public ResponseEntity<?> login(@RequestBody UsuarioRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody UsuarioRequest loginRequest) {
         var authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha());
-        Authentication auth = authenticationManager.authenticate(authToken);
+        UsuarioResponse usuario = usuarioService.buscarPorEmail(loginRequest.getEmail());
+        if (usuario == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
+        Authentication auth = authenticationManager.authenticate(authToken);
         Instant now = Instant.now();
         long validade = 3600L;
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("urbanswift-api") // Quem emitiu o token.
+                .issuer("senainotes-api") // Quem emitiu o token.
                 .issuedAt(now) // Quando foi emitido.
                 .expiresAt(now.plusSeconds(validade)) // Quando expira.
                 .subject(auth.getName()) // A quem o token pertence (o email do usuário).
-                .claim("roles", auth.getAuthorities()) // Informações extras, como os perfis do usuário.
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();
         String token = this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new LoginResponse(token, usuario));
 
 
     }
@@ -77,14 +86,13 @@ public class UsuarioController {
 
     //Buscar por email
     @GetMapping("/buscar/{email}")
-    @Operation (summary =  "metodo pra buscar por email")
+    @Operation(summary = "metodo pra buscar por email")
     public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
-        Usuario usuario = usuarioService.buscarPorEmail(email);
+        UsuarioResponse usuario = usuarioService.buscarPorEmail(email);
         if (usuario == null) {
             ResponseEntity.badRequest().body("usuario nao encontrado");
         }
-        UsuarioResponse dto = usuarioService.converterParaResponse(usuario);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(usuario);
     }
 
     // Cadastrar novo usuário
@@ -97,7 +105,6 @@ public class UsuarioController {
         }
         return ResponseEntity.ok("Usuário cadastrado com sucesso");
     }
-
 
 
     // Atualizar usuário existente

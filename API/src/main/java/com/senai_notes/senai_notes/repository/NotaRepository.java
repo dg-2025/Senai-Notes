@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Repository
-public interface NotaRepository extends JpaRepository<Nota, Integer> {
+public interface  NotaRepository extends JpaRepository<Nota, Integer> {
     List<Nota> findByIdUsuarioEmail(String Email);
     List<Nota> findByIdUsuario_id(Integer id);
 }

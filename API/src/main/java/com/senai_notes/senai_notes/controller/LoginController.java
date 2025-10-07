@@ -1,5 +1,6 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.UsuarioDTO.LoginRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.LoginResponse;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioResponse;
@@ -25,7 +26,6 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/api/login")
 @SecurityRequirement(name = "bearerAuth")
-
 public class LoginController {
 
     private final UsuarioService usuarioService;
@@ -38,10 +38,13 @@ public class LoginController {
         this.authenticationManager = authenticationManager;
     }
 
-    //Metodo de login
+    // Metodo de login
     @PostMapping()
-    @Operation(summary = "metodo de login")
-    public ResponseEntity<?> login(@RequestBody UsuarioRequest loginRequest) {
+    @Operation(
+            summary = "Login do usuário",
+            description = "Autentica o usuário pelo e-mail e senha e retorna um token JWT com as informações do usuário."
+    )
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         var authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha());
         UsuarioResponse usuario = usuarioService.buscarPorEmail(loginRequest.getEmail());
         if (usuario == null) {
@@ -51,16 +54,17 @@ public class LoginController {
         Authentication auth = authenticationManager.authenticate(authToken);
         Instant now = Instant.now();
         long validade = 3600L;
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("senainotes-api") // Quem emitiu o token.
-                .issuedAt(now) // Quando foi emitido.
-                .expiresAt(now.plusSeconds(validade)) // Quando expira.
-                .subject(auth.getName()) // A quem o token pertence (o email do usuário).
+                .issuer("senainotes-api") // Quem emitiu o token
+                .issuedAt(now) // Quando foi emitido
+                .expiresAt(now.plusSeconds(validade)) // Quando expira
+                .subject(auth.getName()) // A quem o token pertence (email do usuário)
                 .build();
+
         JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();
         String token = this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+
         return ResponseEntity.ok(new LoginResponse(token, usuario));
-
-
     }
 }

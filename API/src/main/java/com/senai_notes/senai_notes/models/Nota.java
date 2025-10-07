@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,9 +25,8 @@ public class Nota {
     @Column(name = "titulo", nullable = false, length = Integer.MAX_VALUE)
     private String titulo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_tag")
-    private Tag idTag;
+    @OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
 
     @Column(name = "descricao", length = Integer.MAX_VALUE)
     private String descricao;

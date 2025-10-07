@@ -25,7 +25,8 @@ public class TagController {
 
     // Listar todas as tags
     @GetMapping
-    @Operation(summary = "Listar todas as tags cadastradas")
+    @Operation(summary = "Listar todas as tags",
+            description = "Retorna todas as tags cadastradas vinculadas ao e-mail do usuário.")
     public ResponseEntity<List<ListarTagDTO>> listarTags(String email) {
         List<ListarTagDTO> tags = tagService.listarTags(email);
         return ResponseEntity.ok(tags);
@@ -33,9 +34,10 @@ public class TagController {
 
     // Buscar tag por ID
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar tag por ID")
+    @Operation(summary = "Buscar tag por ID",
+            description = "Retorna uma tag específica pelo seu ID.")
     public ResponseEntity<?> buscarTag(@PathVariable int id) {
-        Tag tag = tagService.buscarPorId(id);
+        List<ListarTagDTO> tag = tagService.buscarPorId(id);
         if (tag == null) {
             return ResponseEntity.badRequest().body("Tag não encontrada");
         }
@@ -44,7 +46,8 @@ public class TagController {
 
     // Adicionar nova tag
     @PostMapping
-    @Operation(summary = "Cadastrar nova tag")
+    @Operation(summary = "Cadastrar nova tag",
+            description = "Cria uma nova tag. Campos esperados: nome, idUsuario.")
     public ResponseEntity<?> cadastrarTag(@RequestBody CadastroTagDTO newTag) {
         Tag tagCriada = tagService.adicionarTag(newTag);
         if (tagCriada == null) {
@@ -55,9 +58,10 @@ public class TagController {
 
     // Atualizar tag
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar uma tag existente")
-    public ResponseEntity<?> atualizarTag(@PathVariable int id, @RequestBody Tag novaTag) {
-        Tag tagAtualizada = tagService.atualizarTag(novaTag, id);
+    @Operation(summary = "Atualizar tag existente",
+            description = "Atualiza os dados de uma tag existente pelo ID.")
+    public ResponseEntity<?> atualizarTag(@PathVariable int id, @RequestBody ListarTagDTO dto) {
+        Tag tagAtualizada = tagService.atualizarTag(dto, id);
         if (tagAtualizada == null) {
             return ResponseEntity.badRequest().body("Tag não encontrada");
         }
@@ -66,7 +70,8 @@ public class TagController {
 
     // Remover tag
     @DeleteMapping("/{id}")
-    @Operation(summary = "Remover uma tag pelo ID")
+    @Operation(summary = "Remover tag",
+            description = "Exclui uma tag existente pelo ID informado.")
     public ResponseEntity<?> removerTag(@PathVariable int id) {
         Tag tagRemovida = tagService.removerTag(id);
         if (tagRemovida == null) {

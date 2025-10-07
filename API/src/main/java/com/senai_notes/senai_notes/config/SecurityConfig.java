@@ -63,11 +63,12 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll()
-                        .requestMatchers("/api/usuarios/**").authenticated()
+                        .requestMatchers("/api/usuarios/cadastras").permitAll()
+                        .requestMatchers("/api/usuarios").authenticated()
                         .requestMatchers("/api/tag/**").authenticated()
                         .requestMatchers("/api/notas/**").authenticated()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt((Customizer.withDefaults())));
 

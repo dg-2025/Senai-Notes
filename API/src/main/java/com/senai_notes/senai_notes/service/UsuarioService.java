@@ -41,7 +41,7 @@ public class UsuarioService {
         Usuario usuarioExistente = usuarioRepository.findByEmail(email).orElse(null);
         if (usuarioExistente == null) return null;
 
-        return  converterParaResponse(usuarioExistente);
+        return converterParaResponse(usuarioExistente);
 
     }
 
@@ -57,7 +57,6 @@ public class UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
-
 
 
     // Atualizar usuário existente

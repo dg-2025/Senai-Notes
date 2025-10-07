@@ -28,14 +28,12 @@ public class TagService {
     // Listar todas as tags
     public List<ListarTagDTO> listarTags(String email) {
         List<Tag> tags = tagRepository.findByUsuarioEmail(email);
-        return tags.stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
+        return tags.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
     // Buscar tag por ID
-    public Tag buscarPorId(int id) {
-        return tagRepository.findById(id).orElse(null);
+    public List<ListarTagDTO> buscarPorId(int id) {
+        return tagRepository.findById(id).stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
     // Adicionar nova tag
@@ -53,23 +51,25 @@ public class TagService {
     }
 
     // Atualizar tag existente
-    public Tag atualizarTag(Tag novaTag, int id) {
-        Tag tagExistente = this.buscarPorId(id);
+    public Tag atualizarTag(ListarTagDTO dto, int id) {
+        Tag tagExistente = tagRepository.findById(id).orElse(null);
         if (tagExistente == null) return null;
 
-        tagExistente.setNome(novaTag.getNome());
-        tagExistente.setDescricao(novaTag.getDescricao());
+        tagExistente.setNome(dto.getNome());
+        tagExistente.setDescricao(dto.getDescricao());
 
         return tagRepository.save(tagExistente);
     }
 
+
     // Remover tag
     public Tag removerTag(int id) {
-        Tag tagExistente = this.buscarPorId(id);
-        if (tagExistente == null) return null;
-
-        tagRepository.delete(tagExistente);
-        return tagExistente;
+        Tag tag = tagRepository.findById(id).orElse(null);
+        if (tag == null) {
+            return null;
+        }
+        tagRepository.delete(tag);
+        return tag;
     }
 
     // Conversão para DTO de saída

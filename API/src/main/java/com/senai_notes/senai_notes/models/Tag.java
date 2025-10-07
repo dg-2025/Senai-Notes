@@ -29,4 +29,7 @@ public class Tag {
     @Column(name = "data_criacao")
     private OffsetDateTime dataCriacao;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_nota")
+    private Nota nota;
 }

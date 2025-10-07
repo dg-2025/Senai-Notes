@@ -114,6 +114,7 @@ public class NotaService {
         NotaResponse dto = new NotaResponse();
         dto.setEmail(nota.getIdUsuario().getEmail());
         dto.setTitulo(nota.getTitulo());
+        dto.setTag(nota.setIdTag(nota.getIdTag()))
         dto.setDescricao(nota.getDescricao());
         dto.setImagem(nota.getImagem());
         return dto;

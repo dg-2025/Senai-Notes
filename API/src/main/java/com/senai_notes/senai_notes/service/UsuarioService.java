@@ -5,6 +5,7 @@ import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioResponse;
 import com.senai_notes.senai_notes.models.Usuario;
 import com.senai_notes.senai_notes.repository.UsuarioRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,24 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
+
+    //recuperar senha
+    public void recuperarSenha(String email) {
+        usuarioRepository.findByEmail(email).ifPresent(usuario -> {
+            String novaSenha = RandomStringUtils.randomAlphanumeric(10);
+            String senhaCodificada = passwordEncoder.encode(novaSenha);
+            usuario.setSenha(senhaCodificada);
+            usuarioRepository.save(usuario);
+            emailService.enviarEmail(usuario.getEmail(), novaSenha);
+        });
+        }
 
     // Listar todos os usuários
     public List<UsuarioResponse> listarTodos() {

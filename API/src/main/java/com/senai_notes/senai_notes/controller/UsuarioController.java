@@ -1,11 +1,13 @@
 package com.senai_notes.senai_notes.controller;
 
+import com.senai_notes.senai_notes.dto.Email.ResetarSenhaDTO;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioRequest;
 import com.senai_notes.senai_notes.dto.UsuarioDTO.UsuarioResponse;
 import com.senai_notes.senai_notes.models.Usuario;
 import com.senai_notes.senai_notes.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,15 @@ import java.util.List;
 @RequestMapping("/api/usuarios")
 @SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
+
+    //Recuperar senha
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Recuperar senha",
+            description = "Envia um email com link para o usuario recuperar a senha.")
+    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ResetarSenhaDTO resetarSenhaDTO) {
+        usuarioService.recuperarSenha(resetarSenhaDTO.getEmail());
+        return ResponseEntity.ok("Se um usuário com este e-mail existir, uma nova senha será enviada.");
+    }
 
     // injeção de dependencias
     private final UsuarioService usuarioService;

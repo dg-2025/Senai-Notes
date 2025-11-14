@@ -27,6 +27,7 @@ public class ArmazenamentoService {
     }
 
     // 1. SALVAR ARQUIVO NO S3
+    // CORRIGIDO: Agora retorna APENAS o nome do arquivo (chave S3) para ser salvo no banco.
     public String salvarArquivo(MultipartFile arquivo) {
         String extensao = arquivo.getOriginalFilename()
                 .substring(arquivo.getOriginalFilename().lastIndexOf("."));
@@ -44,7 +45,9 @@ public class ArmazenamentoService {
                     metadata
             ));
 
-            return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + nomeArquivo;
+
+            // Retorna apenas a chave (nome do arquivo) para ser salva no banco.
+            return nomeArquivo;
 
         } catch (IOException e) {
             throw new RuntimeException("Falha ao salvar arquivo no Amazon S3", e);
@@ -52,8 +55,8 @@ public class ArmazenamentoService {
     }
 
 
-
-    // 2. CARREGAR ARQUIVO DO S3 (Retorna a URL pública para o Controller redirecionar)
+    // 2. CARREGAR ARQUIVO DO S3 (Retorna a URL pública)
+    // Este método está correto para montar o URL.
     public String carregarArquivo(String nomeDoArquivo) {
         // A imagem é publicamente acessível (read-only) via policy no bucket
         return String.format("https://%s.s3.%s.amazonaws.com/%s",

@@ -31,34 +31,38 @@ function TelaNotas() {
     setToast({ isOpen: true, message, type })
   }
 
-  // Busca as notas do usuário
-  const carregarNotas = async () => {
-    if (!userId) return
-    try {
-      setLoading(true)
+// O URL base do seu bucket S3 (substitua a região se for diferente)
+const S3_BASE_URL = 'https://senai-notes-meus-arquivos-01.s3.us-east-2.amazonaws.com/';
 
-      const response = await api.get(`/api/notas/buscarporid/${userId}`)
 
-      const dadosFormatados = response.data.map(item => ({
-        id: item.idNota,
-        titulo: item.titulo,
-        descricao: item.descricao,
-        tags: item.tags || [],
-        data: new Date(item.ultimaEdicao || item.dataCriacao).toLocaleDateString('pt-BR'),
-        arquivado: false,
-        imagem: item.imagem
-          ? `${item.imagem}`
-          : null
-      }))
+// Busca as notas do usuário
+const carregarNotas = async () => {
+  if (!userId) return
+  try {
+    setLoading(true)
 
-      setNotas(dadosFormatados)
-    } catch (error) {
-      console.error('Erro ao buscar:', error)
-      showToast('Erro ao carregar notas', 'error')
-    } finally {
-      setLoading(false)
-    }
+    const response = await api.get(`/api/notas/buscarporid/${userId}`)
+
+    const dadosFormatados = response.data.map(item => ({
+      id: item.idNota,
+      titulo: item.titulo,
+      descricao: item.descricao,
+      tags: item.tags || [],
+      data: new Date(item.ultimaEdicao || item.dataCriacao).toLocaleDateString('pt-BR'),
+      arquivado: false,
+      imagem: item.imagem
+        ? `${S3_BASE_URL}${item.imagem}` 
+        : null
+    }))
+
+    setNotas(dadosFormatados)
+  } catch (error) {
+    console.error('Erro ao buscar:', error)
+    showToast('Erro ao carregar notas', 'error')
+  } finally {
+    setLoading(false)
   }
+}
 
   useEffect(() => {
     carregarNotas()

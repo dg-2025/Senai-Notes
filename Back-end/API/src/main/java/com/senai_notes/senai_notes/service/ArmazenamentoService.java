@@ -28,8 +28,9 @@ public class ArmazenamentoService {
 
     // 1. SALVAR ARQUIVO NO S3
     public String salvarArquivo(MultipartFile arquivo) {
-        String extensao = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().lastIndexOf("."));
-        String nomeArquivo = UUID.randomUUID().toString() + extensao; // Nome único
+        String extensao = arquivo.getOriginalFilename()
+                .substring(arquivo.getOriginalFilename().lastIndexOf("."));
+        String nomeArquivo = UUID.randomUUID().toString() + extensao;
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
@@ -39,17 +40,18 @@ public class ArmazenamentoService {
             s3Client.putObject(new PutObjectRequest(
                     bucketName,
                     nomeArquivo,
-                    arquivo.getInputStream(), // Stream do arquivo
+                    arquivo.getInputStream(),
                     metadata
             ));
 
-            return nomeArquivo; // Retorna o nome do arquivo para salvar no DB
+            return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + nomeArquivo;
 
         } catch (IOException e) {
-            // Se falhar o upload para o S3, o Spring deve parar
             throw new RuntimeException("Falha ao salvar arquivo no Amazon S3", e);
         }
     }
+
+
 
     // 2. CARREGAR ARQUIVO DO S3 (Retorna a URL pública para o Controller redirecionar)
     public String carregarArquivo(String nomeDoArquivo) {

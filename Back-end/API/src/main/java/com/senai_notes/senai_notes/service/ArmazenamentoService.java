@@ -21,13 +21,10 @@ public class ArmazenamentoService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    // Injeção de dependência do S3 Client
     public ArmazenamentoService(AmazonS3 s3Client) {
         this.s3Client = s3Client;
     }
 
-    // 1. SALVAR ARQUIVO NO S3
-    // CORRIGIDO: Agora retorna APENAS o nome do arquivo (chave S3) para ser salvo no banco.
     public String salvarArquivo(MultipartFile arquivo) {
         String extensao = arquivo.getOriginalFilename()
                 .substring(arquivo.getOriginalFilename().lastIndexOf("."));
@@ -45,20 +42,18 @@ public class ArmazenamentoService {
                     metadata
             ));
 
-
-            // Retorna apenas a chave (nome do arquivo) para ser salva no banco.
-            return nomeArquivo;
+            // *** AQUI ESTÁ A CORREÇÃO ***
+            return String.format(
+                    "https://%s.s3.%s.amazonaws.com/%s",
+                    bucketName, region, nomeArquivo
+            );
 
         } catch (IOException e) {
             throw new RuntimeException("Falha ao salvar arquivo no Amazon S3", e);
         }
     }
 
-
-    // 2. CARREGAR ARQUIVO DO S3 (Retorna a URL pública)
-    // Este método está correto para montar o URL.
     public String carregarArquivo(String nomeDoArquivo) {
-        // A imagem é publicamente acessível (read-only) via policy no bucket
         return String.format("https://%s.s3.%s.amazonaws.com/%s",
                 bucketName, region, nomeDoArquivo);
     }

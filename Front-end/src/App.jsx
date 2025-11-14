@@ -21,7 +21,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Redireciona a rota raiz para o dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
 
         {/* Rotas protegidas que só funcionam com token válido */}
         <Route element={<RotaProtegida />}>

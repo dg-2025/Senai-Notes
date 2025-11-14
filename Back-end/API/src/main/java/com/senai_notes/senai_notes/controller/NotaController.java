@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -53,8 +54,8 @@ public class NotaController {
     @Operation(summary = "Listar notas por ID do usuário", description = "Retorna todas as notas associadas ao ID do usuário informado.")
     public ResponseEntity<List<NotaResponse>> buscarNotasPorIdUsuario(@PathVariable Integer id) {
         List<NotaResponse> notas = notaService.listarNotasPorUsuarioId(id);
-        if (notas == null || notas.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (notas == null) {
+            notas = new ArrayList<>();
         }
         return ResponseEntity.ok(notas);
     }
@@ -64,19 +65,61 @@ public class NotaController {
     @Operation(summary = "Cadastrar nova nota com imagem", description = "Cria uma nova nota com uma imagem enviada.")
     public ResponseEntity<?> cadastrarNota(@ModelAttribute NotaRequest notaRequest) {
 
+        System.out.println("========== INÍCIO DEBUG CADASTRO ==========");
+
+        // 1. Verificar dados básicos
+        System.out.println("Título recebido: " + notaRequest.getTitulo());
+        System.out.println("Descrição recebida: " + notaRequest.getDescricao());
+        System.out.println("ID Usuário recebido: " + notaRequest.getIdUsuario());
+        System.out.println("Tags recebidas: " + notaRequest.getTags());
+
+        // 2. Verificar a imagem
         MultipartFile imagem = notaRequest.getImagem();
         String nomeArquivo = null;
 
-        if (imagem != null && !imagem.isEmpty()) {
-            nomeArquivo = armazenamentoService.salvarArquivo(imagem);
+        if (imagem == null) {
+            System.out.println("⚠️ AVISO: O objeto 'imagem' está NULL (o Front não enviou ou o nome do campo está errado).");
+        } else {
+            System.out.println("📸 Imagem detectada!");
+            System.out.println("   - Nome original: " + imagem.getOriginalFilename());
+            System.out.println("   - Tamanho (bytes): " + imagem.getSize());
+            System.out.println("   - Content Type: " + imagem.getContentType());
+
+            if (imagem.isEmpty()) {
+                System.out.println("⚠️ AVISO: O arquivo existe mas está VAZIO (0 bytes).");
+            } else {
+                // Tenta salvar
+                try {
+                    nomeArquivo = armazenamentoService.salvarArquivo(imagem);
+                    System.out.println("✅ Sucesso! Arquivo salvo no disco com nome: " + nomeArquivo);
+                } catch (Exception e) {
+                    System.out.println("❌ ERRO FATAL ao salvar no disco: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
         }
 
-        Nota notaCriada = notaService.adicionarNota(notaRequest, nomeArquivo);
-        if (notaCriada == null) {
-            return ResponseEntity.badRequest().body("Erro ao adicionar nota");
-        }
+        // 3. Tentar salvar no banco
+        System.out.println("💾 Tentando salvar nota no banco...");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Nota criada com sucesso");
+        try {
+            Nota notaCriada = notaService.adicionarNota(notaRequest, nomeArquivo);
+
+            if (notaCriada == null) {
+                System.out.println("❌ ERRO: notaService retornou NULL. Verifique se o usuário existe.");
+                return ResponseEntity.badRequest().body("Erro ao adicionar nota (Service retornou null)");
+            }
+
+            System.out.println("✅ SUCESSO TOTAL! Nota salva com ID: " + notaCriada.getId());
+            System.out.println("===========================================");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Nota criada com sucesso");
+
+        } catch (Exception e) {
+            System.out.println("❌ EXCEÇÃO AO SALVAR NO BANCO: " + e.getMessage());
+            e.printStackTrace(); // Isso mostra o erro completo no console
+            return ResponseEntity.internalServerError().body("Erro interno: " + e.getMessage());
+        }
     }
 
 

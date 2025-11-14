@@ -34,6 +34,23 @@ public class UsuarioService {
             emailService.enviarEmail(usuario.getEmail(), novaSenha);
         });
         }
+    // trocar senha
+    // Adicione dentro de UsuarioService
+    public void trocarSenha(Integer id, String senhaAntiga, String novaSenha) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // 1. Verifica se a senha antiga bate com a Hash do banco
+        if (!passwordEncoder.matches(senhaAntiga, usuario.getSenha())) {
+            throw new RuntimeException("A senha antiga está incorreta!");
+        }
+
+        // 2. Criptografa a nova senha antes de salvar
+        String novaSenhaCodificada = passwordEncoder.encode(novaSenha);
+        usuario.setSenha(novaSenhaCodificada);
+
+        usuarioRepository.save(usuario);
+    }
 
     // Listar todos os usuários
     public List<UsuarioResponse> listarTodos() {
@@ -60,6 +77,10 @@ public class UsuarioService {
 
     // Cadastrar novo usuário
     public Usuario cadastrarUsuario(UsuarioRequest dto) {
+        Usuario existente = usuarioRepository.findByEmail(dto.getEmail()).orElse(null);
+        if (existente != null) {
+            throw new RuntimeException("Este e-mail já está cadastrado!");
+        }
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());

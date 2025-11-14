@@ -23,8 +23,11 @@ public class NotaService {
     private final TagRepository tagRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public NotaService(NotaRepository notaRepository, TagRepository tagRepository,
-                       UsuarioRepository usuarioRepository) {
+    public NotaService(
+            NotaRepository notaRepository,
+            TagRepository tagRepository,
+            UsuarioRepository usuarioRepository
+    ) {
         this.notaRepository = notaRepository;
         this.tagRepository = tagRepository;
         this.usuarioRepository = usuarioRepository;
@@ -38,7 +41,7 @@ public class NotaService {
                 .collect(Collectors.toList());
     }
 
-    // Listar por e-mail
+    // Listar por email do usuário
     public List<NotaResponse> listarNotasPorEmail(String email) {
         List<Nota> notas = notaRepository.findByIdUsuarioEmail(email);
         return notas.stream()
@@ -46,7 +49,7 @@ public class NotaService {
                 .collect(Collectors.toList());
     }
 
-    // Listar por ID do usuário
+    // Listar notas pelo ID do usuário
     public List<NotaResponse> listarNotasPorUsuarioId(Integer id) {
         List<Nota> notas = notaRepository.findByIdUsuario_id(id);
         return notas.stream()
@@ -59,7 +62,7 @@ public class NotaService {
         return notaRepository.findById(id).orElse(null);
     }
 
-    // ✅ Adicionar nota (com imagem como parâmetro separado)
+    // Adicionar nota com imagem
     public Nota adicionarNota(NotaRequest dto, String nomeImagem) {
         Usuario usuario = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
         if (usuario == null) return null;
@@ -74,15 +77,25 @@ public class NotaService {
 
         List<Tag> tags = new ArrayList<>();
         for (String nomeTag : dto.getTags()) {
-            Optional<Tag> tagExistente = tagRepository.findByNomeAndUsuarioId(nomeTag, usuario.getId());
-            Tag tag = tagExistente.filter(t -> t.getNota() == null).orElseGet(() -> {
-                Tag nova = new Tag();
-                nova.setNome(nomeTag);
-                nova.setUsuario(usuario);
-                nova.setDataCriacao(OffsetDateTime.now());
-                return nova;
-            });
 
+            // buscar tags existentes pelo nome (lista)
+            List<Tag> tagsEncontradas = tagRepository.findByNomeAndUsuarioId(nomeTag, usuario.getId());
+
+            Tag tag;
+
+            // se encontrou alguma, usa a primeira
+            if (!tagsEncontradas.isEmpty()) {
+                tag = tagsEncontradas.get(0);
+            } else {
+                // se não encontrou, cria nova
+                tag = new Tag();
+                tag.setNome(nomeTag);
+                tag.setUsuario(usuario);
+                tag.setDataCriacao(OffsetDateTime.now());
+                tag = tagRepository.save(tag);
+            }
+
+            // vincular tag à nota
             tag.setNota(nota);
             tags.add(tag);
         }
@@ -91,12 +104,12 @@ public class NotaService {
         return notaRepository.save(nota);
     }
 
-    // ✅ Adicionar nota (sem imagem)
+    // Adicionar nota sem imagem
     public Nota adicionarNota(NotaRequest dto) {
         return adicionarNota(dto, null);
     }
 
-    // ✅ Atualizar nota existente (agora aceita imagem também)
+    // Atualizar nota (aceita imagem nova opcional)
     public Nota atualizarNota(NotaRequest dto, int id, String nomeImagem) {
         Nota notaExistente = buscarPorId(id);
         if (notaExistente == null) return null;
@@ -109,22 +122,33 @@ public class NotaService {
         notaExistente.setIdUsuario(usuario);
         notaExistente.setUltimaEdicao(OffsetDateTime.now());
 
-        // Só atualiza imagem se foi enviada uma nova
+        // atualizar imagem somente se veio nova
         if (nomeImagem != null) {
             notaExistente.setImagem(nomeImagem);
         }
 
-        // Atualiza tags
+        // atualizar tags
         notaExistente.getTags().clear();
+
         for (String nomeTag : dto.getTags()) {
-            Optional<Tag> tagExistente = tagRepository.findByNomeAndUsuarioId(nomeTag, usuario.getId());
-            Tag tag = tagExistente.orElseGet(() -> {
-                Tag nova = new Tag();
-                nova.setNome(nomeTag);
-                nova.setUsuario(usuario);
-                nova.setDataCriacao(OffsetDateTime.now());
-                return nova;
-            });
+
+            // buscar tags existentes
+            List<Tag> tagsEncontradas = tagRepository.findByNomeAndUsuarioId(nomeTag, usuario.getId());
+
+            Tag tag;
+
+            // se encontrou alguma, usa a primeira
+            if (!tagsEncontradas.isEmpty()) {
+                tag = tagsEncontradas.get(0);
+            } else {
+                // se não encontrou, criar nova
+                tag = new Tag();
+                tag.setNome(nomeTag);
+                tag.setUsuario(usuario);
+                tag.setDataCriacao(OffsetDateTime.now());
+            }
+
+            // vincular tag
             tag.setNota(notaExistente);
             notaExistente.getTags().add(tag);
         }
@@ -136,11 +160,12 @@ public class NotaService {
     public Nota removerNota(int id) {
         Nota nota = buscarPorId(id);
         if (nota == null) return null;
+
         notaRepository.delete(nota);
         return nota;
     }
 
-    // Conversão para DTO de resposta
+    // Converter entidade Nota para NotaResponse
     private NotaResponse converterParaDTO(Nota nota) {
         NotaResponse dto = new NotaResponse();
         dto.setIdNota(nota.getId());

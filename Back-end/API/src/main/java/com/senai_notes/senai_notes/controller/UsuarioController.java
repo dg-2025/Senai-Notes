@@ -1,6 +1,7 @@
 package com.senai_notes.senai_notes.controller;
 
 import com.senai_notes.senai_notes.DTOs.Email.ResetarSenhaDTO;
+import com.senai_notes.senai_notes.DTOs.Usuario.TrocarSenhaDTO;
 import com.senai_notes.senai_notes.DTOs.Usuario.UsuarioRequest;
 import com.senai_notes.senai_notes.DTOs.Usuario.UsuarioResponse;
 import com.senai_notes.senai_notes.models.Usuario;
@@ -25,6 +26,18 @@ public class UsuarioController {
     public ResponseEntity<String> forgotPassword(@Valid @RequestBody ResetarSenhaDTO resetarSenhaDTO) {
         usuarioService.recuperarSenha(resetarSenhaDTO.getEmail());
         return ResponseEntity.ok("Se um usuário com este e-mail existir, uma nova senha será enviada.");
+    }
+
+    // Adicione dentro de UsuarioController
+    @PutMapping("/{id}/alterar-senha")
+    @Operation(summary = "Alterar senha", description = "Valida a senha antiga e atualiza para a nova.")
+    public ResponseEntity<?> alterarSenha(@PathVariable Integer id, @RequestBody TrocarSenhaDTO dto) {
+        try {
+            usuarioService.trocarSenha(id, dto.getSenhaAntiga(), dto.getNovaSenha());
+            return ResponseEntity.ok("Senha alterada com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // injeção de dependencias
@@ -72,11 +85,14 @@ public class UsuarioController {
     @Operation(summary = "Cadastrar novo usuário",
             description = "Cria um novo usuário. Campos obrigatórios: nome, email, senha.")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody UsuarioRequest novoUsuario) {
-        Usuario usuario = usuarioService.cadastrarUsuario(novoUsuario);
-        if (usuario == null) {
-            return ResponseEntity.badRequest().body("Erro ao cadastrar usuário");
+        try {
+            // Tenta cadastrar
+            Usuario usuario = usuarioService.cadastrarUsuario(novoUsuario);
+            return ResponseEntity.ok("Usuário cadastrado com sucesso");
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("Usuário cadastrado com sucesso");
     }
 
     // Atualizar usuário existente

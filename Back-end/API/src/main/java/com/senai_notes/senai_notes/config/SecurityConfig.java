@@ -73,6 +73,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -82,6 +83,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/usuarios").authenticated()
                         .requestMatchers("/api/tag/**").authenticated()
                         .requestMatchers("/api/notas/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/notas/imagens/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/usuarios/forgot-password").permitAll()
                         .anyRequest().authenticated()

@@ -47,7 +47,7 @@ function TelaNotas() {
         data: new Date(item.ultimaEdicao || item.dataCriacao).toLocaleDateString('pt-BR'),
         arquivado: false,
         imagem: item.imagem
-          ? `${VITE_API_URL}/api/notas/imagens/${item.imagem}`
+          ? `${item.imagem}`
           : null
       }))
 

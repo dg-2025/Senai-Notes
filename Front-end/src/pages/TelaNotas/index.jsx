@@ -31,38 +31,40 @@ function TelaNotas() {
     setToast({ isOpen: true, message, type })
   }
 
-// O URL base do seu bucket S3 (substitua a região se for diferente)
-const S3_BASE_URL = 'https://senai-notes-meus-arquivos-01.s3.us-east-2.amazonaws.com/';
+  const S3_BASE_URL = 'https://senai-notes-meus-arquivos-01.s3.us-east-2.amazonaws.com/';
+
+  // Busca as notas do usuário
+  const carregarNotas = async () => {
+    if (!userId) return
+    try {
+      setLoading(true)
+
+      const response = await api.get(`/api/notas/buscarporid/${userId}`)
+
+      const dadosFormatados = response.data.map(item => ({
+        id: item.idNota,
+        titulo: item.titulo,
+        descricao: item.descricao,
+        tags: item.tags || [],
+        data: new Date(item.ultimaEdicao || item.dataCriacao).toLocaleDateString('pt-BR'),
+        arquivado: false,
 
 
-// Busca as notas do usuário
-const carregarNotas = async () => {
-  if (!userId) return
-  try {
-    setLoading(true)
+        imagem: item.imagem
+          ? item.imagem.startsWith('http') || item.imagem.startsWith('https')
+            ? item.imagem // Cenário 1: Já é um URL completo (dados antigos), então usa ele.
+            : `${S3_BASE_URL}${item.imagem}` // Cenário 2: É apenas a chave S3 (dados novos), então monta o URL.
+          : null
+      }))
 
-    const response = await api.get(`/api/notas/buscarporid/${userId}`)
-
-    const dadosFormatados = response.data.map(item => ({
-      id: item.idNota,
-      titulo: item.titulo,
-      descricao: item.descricao,
-      tags: item.tags || [],
-      data: new Date(item.ultimaEdicao || item.dataCriacao).toLocaleDateString('pt-BR'),
-      arquivado: false,
-      imagem: item.imagem
-        ? `${S3_BASE_URL}${item.imagem}` 
-        : null
-    }))
-
-    setNotas(dadosFormatados)
-  } catch (error) {
-    console.error('Erro ao buscar:', error)
-    showToast('Erro ao carregar notas', 'error')
-  } finally {
-    setLoading(false)
+      setNotas(dadosFormatados)
+    } catch (error) {
+      console.error('Erro ao buscar:', error)
+      showToast('Erro ao carregar notas', 'error')
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
   useEffect(() => {
     carregarNotas()
@@ -233,14 +235,14 @@ const carregarNotas = async () => {
           <div className="lista-tags-full">
             {todasTags.length > 0
               ? todasTags.map(tag => (
-                  <button
-                    key={tag}
-                    className="item-tag-full"
-                    onClick={() => setFiltroAtivo(tag)}
-                  >
-                    <Tag size={18} /> {tag}
-                  </button>
-                ))
+                <button
+                  key={tag}
+                  className="item-tag-full"
+                  onClick={() => setFiltroAtivo(tag)}
+                >
+                  <Tag size={18} /> {tag}
+                </button>
+              ))
               : (
                 <p style={{ padding: 20, color: 'var(--text-secondary)' }}>
                   Nenhuma tag.
@@ -277,9 +279,8 @@ const carregarNotas = async () => {
 
         <main className="area-conteudo">
           <div
-            className={`mobile-header-control ${
-              notaSelecionada ? 'esconder-mobile' : ''
-            }`}
+            className={`mobile-header-control ${notaSelecionada ? 'esconder-mobile' : ''
+              }`}
           >
             {filtroAtivo === 'LISTA_TAGS'
               ? (
@@ -299,9 +300,8 @@ const carregarNotas = async () => {
             {renderConteudoPrincipal()}
 
             <div
-              className={`area-detalhe-wrapper ${
-                !notaSelecionada ? 'esconder-mobile' : 'mostrar-mobile'
-              }`}
+              className={`area-detalhe-wrapper ${!notaSelecionada ? 'esconder-mobile' : 'mostrar-mobile'
+                }`}
             >
               {notaSelecionada && (
                 <div className="mobile-back-header">

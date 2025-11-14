@@ -1,60 +1,60 @@
 package com.senai_notes.senai_notes.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
-public class ArmazenamentoService{
+public class ArmazenamentoService {
 
-    private final Path localDeArmazenamento;
+    private final AmazonS3 s3Client;
 
-    public ArmazenamentoService(@Value("${file.upload-dir}") String uploadDir) {
-        this.localDeArmazenamento = Paths.get(uploadDir);
-        try {
-            Files.createDirectories(localDeArmazenamento);
-        } catch (IOException e) {
-            throw new RuntimeException("Não foi possível criar a pasta de uploads.", e);
-        }
+    @Value("${s3.bucket-name}")
+    private String bucketName;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
+
+    // Injeção de dependência do S3 Client
+    public ArmazenamentoService(AmazonS3 s3Client) {
+        this.s3Client = s3Client;
     }
 
+    // 1. SALVAR ARQUIVO NO S3
     public String salvarArquivo(MultipartFile arquivo) {
+        String extensao = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().lastIndexOf("."));
+        String nomeArquivo = UUID.randomUUID().toString() + extensao; // Nome único
+
         try {
-            String nomeOriginal = arquivo.getOriginalFilename();
-            String extensao = nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
-            String nomeUnico = UUID.randomUUID().toString() + extensao;
-            Path caminhoDestino = localDeArmazenamento.resolve(nomeUnico);
-            try (InputStream inputStream = arquivo.getInputStream()) {
-                Files.copy(inputStream, caminhoDestino, StandardCopyOption.REPLACE_EXISTING);
-            }
-            return nomeUnico;
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(arquivo.getSize());
+            metadata.setContentType(arquivo.getContentType());
+
+            s3Client.putObject(new PutObjectRequest(
+                    bucketName,
+                    nomeArquivo,
+                    arquivo.getInputStream(), // Stream do arquivo
+                    metadata
+            ));
+
+            return nomeArquivo; // Retorna o nome do arquivo para salvar no DB
+
         } catch (IOException e) {
-            throw new RuntimeException("Falha ao salvar o arquivo.", e);
+            // Se falhar o upload para o S3, o Spring deve parar
+            throw new RuntimeException("Falha ao salvar arquivo no Amazon S3", e);
         }
     }
 
-    public Resource carregarArquivo(String nomeDoArquivo) {
-        try {
-            Path arquivo = localDeArmazenamento.resolve(nomeDoArquivo);
-            Resource resource = new UrlResource(arquivo.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Não foi possível ler o arquivo: " + nomeDoArquivo);
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Erro ao tentar carregar o arquivo: " + nomeDoArquivo, e);
-        }
+    // 2. CARREGAR ARQUIVO DO S3 (Retorna a URL pública para o Controller redirecionar)
+    public String carregarArquivo(String nomeDoArquivo) {
+        // A imagem é publicamente acessível (read-only) via policy no bucket
+        return String.format("https://%s.s3.%s.amazonaws.com/%s",
+                bucketName, region, nomeDoArquivo);
     }
 }

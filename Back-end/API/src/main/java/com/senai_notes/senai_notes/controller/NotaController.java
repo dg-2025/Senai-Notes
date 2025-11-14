@@ -7,8 +7,7 @@ import com.senai_notes.senai_notes.service.ArmazenamentoService;
 import com.senai_notes.senai_notes.service.NotaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -123,14 +122,21 @@ public class NotaController {
     }
 
 
-    // Servir imagem
     @GetMapping("/imagens/{nomeDoArquivo}")
-    @Operation(summary = "Servir imagem de nota", description = "Retorna a imagem salva pelo nome do arquivo.")
-    public ResponseEntity<Resource> servirImagem(@PathVariable String nomeDoArquivo) {
-        Resource arquivo = armazenamentoService.carregarArquivo(nomeDoArquivo);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE)
-                .body(arquivo);
+    @Operation(summary = "Servir imagem de nota", description = "Redireciona para a URL segura do S3.")
+    public ResponseEntity<Void> servirImagem(@PathVariable String nomeDoArquivo) {
+
+        // 1. Pega a URL do S3 (seu serviço deve retornar a String da URL)
+        String urlS3 = armazenamentoService.carregarArquivo(nomeDoArquivo);
+
+        if (urlS3 == null || urlS3.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // 2. Retorna 302 Found (Redirecionamento) com o Location Header
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header(HttpHeaders.LOCATION, urlS3)
+                .build();
     }
 
     // Editar / Atualizar uma nota

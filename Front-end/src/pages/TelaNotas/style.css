@@ -1,0 +1,285 @@
+/* layout geral */
+.global-tela {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-app);
+  overflow: hidden;
+}
+
+.layout-grid {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* sidebar desktop */
+.area-menu {
+  width: 260px;
+  height: 100%;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* área principal */
+.area-conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.conteudo-dividido {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* lista de notas */
+.wrapper-lista {
+  height: 100%;
+}
+
+/* detalhe da nota */
+.area-detalhe-wrapper {
+  flex: 1.2;
+  min-width: 0;
+  position: relative;
+  z-index: 5;
+  background-color: var(--bg-card);
+}
+
+.mobile-back-header {
+  display: none;
+}
+
+/* =============================== */
+/*            MOBILE               */
+/* =============================== */
+@media (max-width: 768px) {
+
+  .layout-grid {
+    display: block;
+    position: relative;
+  }
+
+  /* esconde menu lateral */
+  .area-menu {
+    display: none;
+  }
+
+  /* conteúdo ocupa a tela toda */
+  .area-conteudo {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 70px;
+  }
+
+  /* header de busca */
+  .mobile-header-control {
+    width: 100%;
+    background-color: var(--bg-card);
+    z-index: 10;
+  }
+
+  /* lista 100% */
+  .wrapper-lista {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* detalhe da nota por cima (animação estilo app) */
+  .area-detalhe-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    background-color: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+  }
+
+  /* header do botão voltar */
+  .mobile-back-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .btn-voltar-mobile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border: none;
+    background: none;
+  }
+
+  /* utilitários */
+  .esconder-mobile {
+    display: none !important;
+  }
+
+  .mostrar-mobile {
+    display: flex !important;
+  }
+}
+
+/* ações no header mobile */
+.mobile-action-icons {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+}
+
+.mobile-action-icons button {
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+/* =============================== */
+/*   MODAL DE TAGS (ESTILO GAVETA) */
+/* =============================== */
+.modal-tags-overlay {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.modal-tags-card {
+  width: 100%;
+  background-color: var(--bg-card);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  animation: subirGaveta 0.3s ease-out;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes subirGaveta {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-tags-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.lista-tags-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.tag-item-mobile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background-color: var(--bg-hover);
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.tag-item-mobile.ativo {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.sem-tags {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px;
+}
+
+/* =============================== */
+/*    LISTA DE TAGS MOBILE FULL    */
+/* =============================== */
+.container-tags-mobile {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-card);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.titulo-pagina-mobile {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.header-mobile-simples {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* lista estilo iOS */
+.lista-tags-full {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-tag-full {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.item-tag-full:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  padding-left: 10px;
+  transition: all 0.2s;
+}
+
+.item-tag-full svg {
+  color: var(--text-secondary);
+}

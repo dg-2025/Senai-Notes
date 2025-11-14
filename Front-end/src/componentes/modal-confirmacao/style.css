@@ -1,0 +1,115 @@
+/* fundo escuro do modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+
+  z-index: 1000;
+}
+
+/* cartão do modal */
+.modal-card {
+  width: 100%;
+  max-width: 440px;
+
+  padding: 32px;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* título + ícone */
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* texto do corpo */
+.modal-body p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* área dos botões */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* botão cancelar */
+.btn-modal-cancel {
+  padding: 10px 20px;
+
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: background 0.2s;
+}
+
+.btn-modal-cancel:hover {
+  background-color: var(--border);
+}
+
+/* botão confirmar */
+.btn-modal-confirm {
+  padding: 10px 20px;
+
+  border-radius: 8px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: white;
+  cursor: pointer;
+
+  transition: opacity 0.2s;
+}
+
+.btn-modal-confirm:hover {
+  opacity: 0.9;
+}
+
+/* variações de cor */
+.btn-modal-confirm.btn-primary {
+  background-color: var(--primary);
+}
+
+.btn-modal-confirm.btn-danger {
+  background-color: var(--danger);
+}

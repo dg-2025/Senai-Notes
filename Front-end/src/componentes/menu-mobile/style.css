@@ -1,0 +1,59 @@
+/* MENU MOBILE - CONTAINER */
+.menu-mobile-container {
+    display: none; /* Escondido no Desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+    padding-bottom: 10px; /* Espaço barra iPhone */
+}
+
+/* BOTÕES DO MENU */
+.item-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    width: 60px;
+}
+
+.item-mobile.ativo {
+    color: var(--primary);
+}
+
+/* BOTÃO CRIAR FLUTUANTE */
+.fab-criar {
+    position: absolute;
+    bottom: 80px; 
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.fab-criar:active {
+    transform: scale(0.95);
+}
+
+/* MOSTRAR APENAS NO MOBILE */
+@media (max-width: 768px) {
+    .menu-mobile-container {
+        display: flex;
+    }
+}

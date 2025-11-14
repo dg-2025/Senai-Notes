@@ -1,0 +1,77 @@
+/* fontes principais do projeto */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=K2D:wght@300;400;600&display=swap');
+
+/* tema claro (padrão) */
+:root {
+  --bg-app: #F3F4F6;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F9FAFB;
+  --bg-input: #FFFFFF;
+
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --text-inverse: #FFFFFF;
+
+  --border: #E5E7EB;
+
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-light: #EFF6FF;
+
+  --danger: #EF4444;
+
+  --shadow: rgba(0, 0, 0, 0.1);
+
+  --font-main: 'Inter', sans-serif;
+}
+
+/* tema escuro */
+[data-theme="dark"] {
+  --bg-app: #09090b;
+  --bg-card: #00001c;
+  --bg-hover: #181829;
+  --bg-input: #18181b;
+
+  --text-primary: #F9FAFB;
+  --text-secondary: #A1A1AA;
+  --text-inverse: #FFFFFF;
+
+  --border: #27272a;
+
+  --primary: #3B82F6;
+  --primary-hover: #2563EB;
+  --primary-light: #1E3A8A;
+
+  --shadow: rgba(0, 0, 0, 0.8);
+}
+
+/* reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* estilo base da aplicação */
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* tipografia padrão para inputs e botões */
+button, input, textarea {
+  font-family: var(--font-main);
+}
+
+/* estilo dos botões (base) */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}

@@ -1,0 +1,56 @@
+/* coluna lateral de ações */
+.acoes-container {
+    width: 240px;
+    height: 100%;
+    padding: 32px;
+    border-left: 1px solid var(--border);
+    background-color: var(--bg-card);
+}
+
+/* grupo dos botões (fixo no topo) */
+.grupo-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+}
+
+/* botão padrão */
+.btn-acao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+}
+
+/* hover padrão */
+.btn-acao:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--text-secondary);
+}
+
+/* hover do botão delete */
+.btn-acao.btn-delete:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* mobile: esconde coluna */
+@media (max-width: 768px) {
+    .acoes-container {
+        display: none;
+    }
+}

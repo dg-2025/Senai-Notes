@@ -1,25 +1,25 @@
-# Etapa 1: build da aplicação usando Maven
+# Etapa 1: build
 FROM eclipse-temurin:17-jdk AS builder
 
 WORKDIR /app
 
-# Copia o projeto completo
+# Copia tudo
 COPY . .
 
-# Compila e gera o .jar (sem rodar testes para acelerar o build)
+# Dá permissão ao Maven Wrapper
+RUN chmod +x mvnw
+
+# Compila e gera o jar
 RUN ./mvnw clean package -DskipTests
 
-# Etapa 2: imagem final para execução
+# Etapa 2: runtime
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Copia o .jar gerado da etapa anterior
+# Copia o jar gerado
 COPY --from=builder /app/target/senai-notes-0.0.1-SNAPSHOT.jar app.jar
 
-# Define a porta (Render vai injetar a porta correta com $PORT)
-ENV PORT=8080
 EXPOSE 8080
 
-# Executa a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]

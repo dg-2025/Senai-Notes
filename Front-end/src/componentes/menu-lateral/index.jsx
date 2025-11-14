@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 import LogoFeather from '../../assets/Feather.svg'
-import { Home, Archive, Tag } from 'lucide-react';
+import { Home, Archive, Tag, Linkedin, Github } from 'lucide-react';
 
 /* MENU LATERAL */
 function MenuLateral({ filtroAtivo, setFiltro, tagsDisponiveis }) {
@@ -59,8 +59,19 @@ function MenuLateral({ filtroAtivo, setFiltro, tagsDisponiveis }) {
                     ))}
                 </div>
             </div>
-
+            <div className="menu-footer">
+                <p>Developed by <strong>Daniel</strong></p>
+                <div className="social-icons">
+                    <a href="https://www.linkedin.com/in/daniel-gomes-fullstack" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                        <Linkedin size={20} />
+                    </a>
+                    <a href="https://github.com/dg-2025" target="_blank" rel="noopener noreferrer" title="GitHub">
+                        <Github size={20} />
+                    </a>
+                </div>
+            </div>
         </nav>
+        
     );
 }
 

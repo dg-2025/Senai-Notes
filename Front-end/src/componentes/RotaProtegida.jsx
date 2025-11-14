@@ -1,16 +1,16 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import NotFound from '../pages/NotFound';
 
 const RotaProtegida = () => {
-    // 1. Tenta pegar o token salvo
     const token = localStorage.getItem('token');
 
-    // 2. Se NÃO tem token, manda pro login
+    // Se NÃO tem token, finge que a página não existe (404)
     if (!token) {
-        return <Navigate to="/login" replace />;
+        return <NotFound />;
     }
 
-    // 3. Se TEM token, deixa renderizar a página (Outlet)
+    // Se tem token, libera o acesso
     return <Outlet />;
 };
 

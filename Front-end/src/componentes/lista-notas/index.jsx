@@ -1,6 +1,7 @@
 import React from 'react'
 import './style.css'
 import { Plus, Image as ImageIcon } from 'lucide-react'
+import ImagemSegura from '../imagem-segura';
 
 function ListaNotas({ notas, vizualisarNota, aoCriarNova }) {
 
@@ -37,13 +38,12 @@ function ListaNotas({ notas, vizualisarNota, aoCriarNova }) {
 
             {/* miniatura da nota */}
             <div className="area-img-miniatura">
-              {nota.imagem ? (
-                <img src={nota.imagem} alt="" className="miniatura-nota" />
-              ) : (
-                <div className="miniatura-placeholder">
-                  <ImageIcon size={24} color="#ccc" />
-                </div>
-              )}
+              {/* Troca a tag <img> pela <ImagemSegura> */}
+              <ImagemSegura
+                url={nota.imagem}
+                className="miniatura-nota"
+                alt=""
+              />
             </div>
 
             {/* texto e informações */}

@@ -107,3 +107,57 @@
 .tag-btn.ativo-tag svg {
     stroke: var(--primary);
 }
+
+
+
+
+/* Rodapé do Menu */
+.menu-footer {
+    margin-top: auto; /* Empurra para o final da tela */
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* 👇 ALINHA TUDO NO CENTRO */
+    align-items: center; 
+    text-align: center;
+}
+
+.menu-footer p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.menu-footer p strong {
+    color: var(--text-primary);
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icons a {
+    color: var(--text-secondary);
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icons a:hover {
+    color: var(--primary);
+    transform: translateY(-2px); /* Pulinho ao passar o mouse */
+}
+
+.menu-footer p a {
+    color: var(--text-primary) !important; /* Branco no Dark, Preto no Light */
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.menu-footer p a:hover {
+    color: var(--primary) !important; /* Azul só quando passa o mouse */
+}

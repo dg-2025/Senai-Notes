@@ -1,4 +1,4 @@
-/* layout geral */
+/* layout geral: controla tamanho total da tela */
 .global-tela {
   width: 100vw;
   height: 100vh;
@@ -6,13 +6,14 @@
   overflow: hidden;
 }
 
+/* grid principal dividido em menu + conteúdo */
 .layout-grid {
   display: flex;
   width: 100%;
   height: 100%;
 }
 
-/* sidebar desktop */
+/* menu lateral apenas no desktop */
 .area-menu {
   width: 260px;
   height: 100%;
@@ -21,7 +22,7 @@
   flex-shrink: 0;
 }
 
-/* área principal */
+/* parte principal da tela */
 .area-conteudo {
   flex: 1;
   display: flex;
@@ -30,18 +31,19 @@
   overflow: hidden;
 }
 
+/* seção que divide lista e detalhe */
 .conteudo-dividido {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-/* lista de notas */
+/* área onde a lista de notas fica */
 .wrapper-lista {
   height: 100%;
 }
 
-/* detalhe da nota */
+/* detalhe da nota ao lado da lista */
 .area-detalhe-wrapper {
   flex: 1.2;
   min-width: 0;
@@ -50,13 +52,12 @@
   background-color: var(--bg-card);
 }
 
+/* header de voltar só aparece no mobile */
 .mobile-back-header {
   display: none;
 }
 
-/* =============================== */
-/*            MOBILE               */
-/* =============================== */
+/* ajustes específicos para mobile */
 @media (max-width: 768px) {
 
   .layout-grid {
@@ -64,32 +65,32 @@
     position: relative;
   }
 
-  /* esconde menu lateral */
+  /* esconde menu lateral para dar espaço */
   .area-menu {
     display: none;
   }
 
-  /* conteúdo ocupa a tela toda */
+  /* conteúdo ocupa a tela inteira */
   .area-conteudo {
     width: 100%;
     height: 100%;
     padding-bottom: 70px;
   }
 
-  /* header de busca */
+  /* header com o campo de busca */
   .mobile-header-control {
     width: 100%;
     background-color: var(--bg-card);
     z-index: 10;
   }
 
-  /* lista 100% */
+  /* lista ocupa 100% em mobile */
   .wrapper-lista {
     width: 100%;
     height: 100%;
   }
 
-  /* detalhe da nota por cima (animação estilo app) */
+  /* detalhe aparece como tela inteira por cima */
   .area-detalhe-wrapper {
     position: fixed;
     top: 0;
@@ -103,7 +104,7 @@
     padding-bottom: 0;
   }
 
-  /* header do botão voltar */
+  /* header com botão voltar */
   .mobile-back-header {
     display: flex;
     align-items: center;
@@ -124,17 +125,18 @@
     background: none;
   }
 
-  /* utilitários */
+  /* utilitário para esconder algo no mobile */
   .esconder-mobile {
     display: none !important;
   }
 
+  /* utilitário para forçar mostrar */
   .mostrar-mobile {
     display: flex !important;
   }
 }
 
-/* ações no header mobile */
+/* ícones de ação no header mobile */
 .mobile-action-icons {
   margin-left: auto;
   display: flex;
@@ -147,9 +149,7 @@
   padding: 4px;
 }
 
-/* =============================== */
-/*   MODAL DE TAGS (ESTILO GAVETA) */
-/* =============================== */
+/* overlay para modal de tags estilo gaveta */
 .modal-tags-overlay {
   position: fixed;
   top: 0; 
@@ -162,6 +162,7 @@
   align-items: flex-end;
 }
 
+/* card da gaveta de tags */
 .modal-tags-card {
   width: 100%;
   background-color: var(--bg-card);
@@ -175,11 +176,13 @@
   flex-direction: column;
 }
 
+/* animação da gaveta subindo */
 @keyframes subirGaveta {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
 }
 
+/* header do modal de tags */
 .modal-tags-header {
   display: flex;
   justify-content: space-between;
@@ -188,6 +191,7 @@
   color: var(--text-primary);
 }
 
+/* lista de tags dentro da gaveta */
 .lista-tags-mobile {
   display: flex;
   flex-direction: column;
@@ -195,6 +199,7 @@
   overflow-y: auto;
 }
 
+/* botão de cada tag */
 .tag-item-mobile {
   display: flex;
   align-items: center;
@@ -209,21 +214,21 @@
   text-align: left;
 }
 
+/* estado quando a tag está ativa */
 .tag-item-mobile.ativo {
   background-color: var(--primary-light);
   color: var(--primary);
   font-weight: 700;
 }
 
+/* mensagem quando não existe nenhuma tag */
 .sem-tags {
   color: var(--text-secondary);
   text-align: center;
   padding: 20px;
 }
 
-/* =============================== */
-/*    LISTA DE TAGS MOBILE FULL    */
-/* =============================== */
+/* container da lista de tags no modo full */
 .container-tags-mobile {
   width: 100%;
   height: 100%;
@@ -232,6 +237,7 @@
   overflow-y: auto;
 }
 
+/* título da seção de tags */
 .titulo-pagina-mobile {
   font-size: 24px;
   font-weight: 700;
@@ -239,6 +245,7 @@
   margin-bottom: 20px;
 }
 
+/* header simples para páginas móveis */
 .header-mobile-simples {
   display: flex;
   align-items: center;
@@ -257,6 +264,7 @@
   flex-direction: column;
 }
 
+/* item individual de tag */
 .item-tag-full {
   display: flex;
   align-items: center;
@@ -273,6 +281,7 @@
   cursor: pointer;
 }
 
+/* efeito hover suave */
 .item-tag-full:hover {
   background-color: var(--bg-hover);
   color: var(--text-primary);
@@ -280,6 +289,7 @@
   transition: all 0.2s;
 }
 
+/* icone das tags */
 .item-tag-full svg {
   color: var(--text-secondary);
 }

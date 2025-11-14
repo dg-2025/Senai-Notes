@@ -1,12 +1,12 @@
-// Importações principais
+// Importações principais da aplicação
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 
-// Estilos globais (valores e padrões do site inteiro)
+// Importando estilos globais do projeto
 import './styles/global.css'
 
-// Renderização da aplicação
+// Renderizando o aplicativo dentro da div root
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />

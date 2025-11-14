@@ -1,28 +1,29 @@
-/* layout geral (desktop) */
+/* layout principal do conteúdo de configurações no desktop */
 .layout-config {
-  display: flex;
+  display: flex; /* coloca o menu e o conteúdo lado a lado */
   width: 100%;
   height: 100%;
   background-color: var(--bg-card);
-  overflow: hidden;
+  overflow: hidden; /* impede rolagem fora da coluna de conteúdo */
 }
 
-/* visibilidade */
-.mobile-only { display: none !important; }
+/* controle de visibilidade entre desktop e mobile */
+.mobile-only { display: none !important; } /* só aparece no mobile */
 .desktop-only { display: flex !important; }
 
-/* sidebar esquerda */
+/* sidebar lateral com as opções de configuração */
 .sidebar-config {
-  width: 250px;
+  width: 250px; /* largura fixa do menu */
   padding: 24px;
   background-color: var(--bg-card);
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border); /* separação visual */
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 8px; /* espaço entre os itens */
+  flex-shrink: 0; /* impede encolher no layout */
 }
 
+/* botão das opções do menu */
 .item-config {
   display: flex;
   align-items: center;
@@ -40,20 +41,23 @@
   color: var(--text-secondary);
 
   border-radius: 8px;
-  transition: all 0.2s;
+  transition: all 0.2s; /* efeito suave */
 }
 
+/* hover dos itens do menu */
 .item-config:hover {
   background-color: var(--bg-hover);
   color: var(--text-primary);
 }
 
+/* estado ativo da opção */
 .item-config.ativo {
   background-color: var(--bg-hover);
   color: var(--text-primary);
   font-weight: 600;
 }
 
+/* estilo específico para botão de logout */
 .item-config.logout {
   margin-top: 20px;
   color: var(--danger);
@@ -63,18 +67,20 @@
   background-color: rgba(239, 68, 68, 0.1);
 }
 
+/* seta da direita (ícone chevron) */
 .seta-dir {
-  margin-left: auto;
+  margin-left: auto; /* empurra para o fim */
   color: var(--text-secondary);
 }
 
-/* conteúdo principal */
+/* área do conteúdo principal */
 .conteudo-config {
-  flex: 1;
+  flex: 1; /* ocupa o espaço restante */
   padding: 40px;
-  overflow-y: auto;
+  overflow-y: auto; /* rolagem apenas no conteúdo */
 }
 
+/* título de cada seção */
 .config-secao h2 {
   font-size: 24px;
   font-weight: 600;
@@ -82,19 +88,21 @@
   color: var(--text-primary);
 }
 
+/* subtítulo explicativo */
 .subtitulo {
   color: var(--text-secondary);
   margin-bottom: 32px;
 }
 
-/* cards de opções */
+/* container dos cards de tema */
 .opcoes-tema {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 600px;
+  max-width: 600px; /* limita largura para ficar clean */
 }
 
+/* card individual de tema */
 .card-opcao {
   display: flex;
   align-items: center;
@@ -109,21 +117,25 @@
   transition: all 0.2s ease;
 }
 
+/* hover no card */
 .card-opcao:hover {
   background-color: var(--bg-hover);
 }
 
+/* card selecionado */
 .card-opcao.selecionado {
   background-color: var(--bg-hover);
   border: 2px solid var(--primary);
 }
 
+/* grupo ícone + texto dentro do card */
 .info-opcao {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+/* bolinha ao redor do ícone */
 .icone-bg {
   width: 48px;
   height: 48px;
@@ -137,6 +149,7 @@
   color: var(--text-secondary);
 }
 
+/* título do card */
 .texto-opcao h3 {
   font-size: 16px;
   font-weight: 600;
@@ -144,12 +157,14 @@
   margin-bottom: 4px;
 }
 
+/* descrição do card */
 .texto-opcao p {
   font-size: 14px;
   color: var(--text-secondary);
   margin: 0;
 }
 
+/* borda da seleção circular */
 .radio-custom {
   width: 20px;
   height: 20px;
@@ -161,10 +176,12 @@
   justify-content: center;
 }
 
+/* borda azul quando selecionado */
 .card-opcao.selecionado .radio-custom {
   border-color: var(--primary);
 }
 
+/* círculo interno preenchido */
 .radio-inner {
   width: 10px;
   height: 10px;
@@ -172,12 +189,12 @@
   border-radius: 50%;
 }
 
-/* botão salvar */
+/* botão aplicar */
 .botao-salvar-container {
   margin-top: 32px;
   max-width: 600px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* botões ficam à direita */
 }
 
 .btn-salvar-config {
@@ -191,7 +208,7 @@
   cursor: pointer;
 }
 
-/* formulário de senha */
+/* formulário alteração de senha */
 .form-senha-config {
   max-width: 600px;
   display: flex;
@@ -199,21 +216,24 @@
   gap: 24px;
 }
 
+/* label dos inputs */
 .campo-config label {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
 }
 
+/* container para o input + ícone do olho */
 .input-wrapper {
   position: relative;
   width: 100%;
 }
 
+/* campo de input */
 .input-wrapper input {
   width: 100%;
   padding: 12px 16px;
-  padding-right: 45px;
+  padding-right: 45px; /* espaço para o ícone */
   border-radius: 8px;
   border: 1px solid var(--border);
 
@@ -223,10 +243,12 @@
   outline: none;
 }
 
+/* borda azul ao focar */
 .input-wrapper input:focus {
   border-color: var(--primary);
 }
 
+/* botão de mostrar/ocultar senha */
 .btn-olho-config {
   position: absolute;
   top: 50%;
@@ -241,6 +263,7 @@
   align-items: center;
 }
 
+/* texto de ajuda */
 .helper-text {
   display: flex;
   align-items: center;
@@ -252,16 +275,17 @@
 }
 
 /* ===================== */
-/*       MOBILE          */
+/* MOBILE RESPONSIVO */
 /* ===================== */
 @media (max-width: 768px) {
 
+  /* troca visibilidade */
   .mobile-only { display: flex !important; }
   .mobile-hidden { display: none !important; }
   .desktop-only { display: none !important; }
 
   .layout-config {
-    display: block;
+    display: block; /* menu em cima, conteúdo embaixo */
   }
 
   /* header mobile */
@@ -270,7 +294,7 @@
     align-items: center;
     gap: 10px;
     padding: 16px;
-    position: sticky;
+    position: sticky; /* fica fixo ao rolar */
     top: 0;
 
     background-color: var(--bg-card);
@@ -278,6 +302,7 @@
     z-index: 10;
   }
 
+  /* título do header */
   .logo-mobile-config {
     display: flex;
     align-items: center;
@@ -288,6 +313,7 @@
     color: var(--text-primary);
   }
 
+  /* botão voltar dentro do header mobile */
   .btn-voltar-config {
     display: flex;
     align-items: center;
@@ -300,7 +326,7 @@
     color: var(--text-secondary);
   }
 
-  /* sidebar vira lista */
+  /* sidebar vira menu simples */
   .sidebar-config {
     width: 100%;
     padding: 16px;
@@ -308,10 +334,49 @@
     height: auto;
   }
 
-  /* conteúdo ocupa a tela toda */
+  /* conteúdo ocupa toda a tela */
   .conteudo-config {
     width: 100%;
     padding: 20px;
-    padding-bottom: 80px;
+    padding-bottom: 80px; /* espaço para menu mobile */
   }
+}
+
+/* rodapé do menu mobile dentro das configurações */
+.mobile-footer-config {
+  margin-top: auto; /* empurra para baixo */
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+/* ícones sociais */
+.social-icons-mobile {
+  display: flex;
+  gap: 20px;
+}
+
+.social-icons-mobile a {
+  color: var(--text-secondary);
+}
+
+/* assinatura */
+.mobile-footer-config p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* link do nome no rodapé */
+.mobile-footer-config p a {
+  color: var(--text-primary) !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.mobile-footer-config p a:hover {
+  color: var(--primary) !important;
 }

@@ -1,6 +1,7 @@
 // imports principais
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Linkedin, Github } from 'lucide-react';
 import './style.css'
 import LogoFeather from '../../assets/Feather.svg'
 
@@ -27,6 +28,18 @@ export default function NotFound() {
       <Link to="/dashboard" className="notfound-button">
         Voltar para o Dashboard
       </Link>
+      <div className="menu-footer">
+        <p>Developed by <strong>Daniel</strong></p>
+        <div className="social-icons">
+          <a href="https://www.linkedin.com/in/daniel-gomes-fullstack" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+            <Linkedin size={20} />
+          </a>
+          <a href="https://github.com/dg-2025" target="_blank" rel="noopener noreferrer" title="GitHub">
+            <Github size={20} />
+          </a>
+        </div>
+      </div>
     </div>
+
   )
 }

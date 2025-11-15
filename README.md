@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="<img width="1024" height="1024" alt="ChatGPT Image 14 de nov  de 2025, 23_52_29" src="https://github.com/user-attachments/assets/bd61ab8a-4f0e-48e4-8007-d8972d3dff79" />
-" width="100" alt="Logo Senai Notes">
+  <img src="https://github.com/user-attachments/assets/bd61ab8a-4f0e-48e4-8007-d8972d3dff79" width="100" alt="Logo Senai Notes">
 </p>
 
 <h1 align="center">
@@ -42,8 +41,6 @@
 
 O design foi 100% baseado no Figma, implementado com temas Light e Dark Mode e totalmente responsivo para desktop e mobile.
 
-*(DICA: Grave sua tela usando o **ScreenToGif** ou **LICEcap**, arraste o GIF para a pasta `docs` e substitua as imagens abaixo!)*
-
 <table>
   <thead>
     <tr>
@@ -53,18 +50,15 @@ O design foi 100% baseado no Figma, implementado com temas Light e Dark Mode e t
   </thead>
   <tbody>
     <tr>
-      <td><img width="1919" height="865" alt="dashboard-noturno" src="https://github.com/user-attachments/assets/18311e76-be88-4520-ae8d-4ffab0a52f9d" />
- alt="Dashboard Light Mode"></td>
-      <td><img width="1919" height="865" alt="dashboard-noturno" src="https://github.com/user-attachments/assets/aac93c43-8ada-4091-bbd1-456154f1074d" />
- alt="Dashboard Dark Mode"></td>
+      <td><img src="https://github.com/user-attachments/assets/7ee54900-6b6c-4857-8858-9af72d43471c" alt="Dashboard Light Mode"></td>
+      <td><img src="https://github.com/user-attachments/assets/49c5dced-5b90-498b-9948-730dafaec20e" alt="Dashboard Dark Mode"></td>
     </tr>
   </tbody>
 </table>
 
 ### Responsividade Mobile (Fiel ao Figma)
 <p align="center">
-  <img width="2156" height="1212" alt="mobile-todas as telas" src="https://github.com/user-attachments/assets/527c7089-af06-4d4f-ace9-9615ceca72e2" />
- alt="Demonstração Mobile" width="80%">
+  <img src="https://github.com/user-attachments/assets/e10cef24-6569-4f9c-bac0-2627f4c52a34" alt="Demonstração Mobile" width="80%">
 </p>
 
 ---
@@ -91,14 +85,14 @@ O maior desafio foi garantir o **armazenamento persistente de imagens** (`Upload
   </ul>
   
   <p align="center">
-    <img src="[LINK PARA docs/Tela-Login.png]" width="32%">
-    <img src="[LINK PARA docs/Tela-criarConta.png]" width="32%">
-    <img src="[LINK PARA docs/Tela-recuperar-Senha.png]" width="32%">
+    <img src="https://github.com/user-attachments/assets/8343c5ff-1010-4a58-b1d6-efdcca115a3a" width="32%" alt="Tela de Login">
+    <img src="https://github.com/user-attachments/assets/30d416ab-5cf0-49ec-8453-ab34330110a4" width="32%" alt="Tela de Cadastro">
+    <img src="https://github.com/user-attachments/assets/1b93611e-244e-4663-bf40-63525ff6db2e" width="32%" alt="Tela de Recuperar Senha">
   </p>
   
   <p align="center">
     <strong>Prova do Envio de E-mail (Recuperação de Senha):</strong><br>
-    <img src="[LINK PARA docs/WhatsApp Image 2025-11-15 at 02.59.49 (1).jpeg]" width="300">
+    <img src="https://github.com/user-attachments/assets/c7af93da-e7cf-450a-b338-0a7ee3ad17b4" width="300" alt="E-mail de Recuperação">
   </p>
 </details>
 
@@ -116,13 +110,12 @@ O maior desafio foi garantir o **armazenamento persistente de imagens** (`Upload
   
   <p align="center">
     <strong>Dashboard Principal</strong><br>
-    <img src="[LINK PARA docs/image_fe916b.jpg]" width="80%">
+    <img src="https://github.com/user-attachments/assets/7ee54900-6b6c-4857-8858-9af72d43471c" width="80%" alt="Dashboard">
   </p>
   
   <p align="center">
-    <strong>Tela de Configurações (Light/Dark) e Modais de Confirmação</strong><br>
-    <img src="[LINK PARA docs/configurações.png]" width="45%">
-    <img src="[LINK PARA docs/image_ffdc3f.png]" width="45%">
+    <strong>Tela de Configurações (Dark)</strong><br>
+    <img src="https://github.com/user-attachments/assets/7dfb1f9c-7d52-4a23-9fd5-4a44d691811b" width="80%" alt="Configurações">
   </p>
 </details>
 
@@ -145,10 +138,10 @@ O maior desafio foi garantir o **armazenamento persistente de imagens** (`Upload
 ## <details><summary>🏛️ Arquitetura e Modelagem de Dados</summary>
 
 ### Modelo Conceitual e Lógico
-O sistema foi modelado para que um Usuário possua Notas e Tags, e as Notas se relacionem com as Tags (N:N, resultando na tabela `tags` que atua como associativa e principal).
+O sistema foi modelado para que um Usuário possua Notas e Tags, e as Notas se relacionem com as Tags.
 
 <p align="center">
-  <img src="[LINK PARA docs/modelagem.png]" alt="Modelo de Dados" width="700">
+  <img src="https://github.com/user-attachments/assets/0416d38e-be24-41cf-8aa9-9aa485a90636" alt="Modelo de Dados" width="700">
 </p>
 
 ### Documentação da API (Swagger)
@@ -157,10 +150,10 @@ A API foi 100% documentada com SpringDoc (OpenAPI) e está disponível publicame
 **Link da API:** [https://senai-notes.onrender.com/swagger-ui/index.html](https://senai-notes.onrender.com/swagger-ui/index.html)
 
 <p align="center">
-  <img src="[LINK PARA docs/login-controller-swagger.png]" alt="Swagger Login" width="80%">
-  <img src="[LINK PARA docs/usuario-controller-swagger.png]" alt="Swagger Usuário" width="80%">
-  <img src="[LINK PARA docs/nota-controller-swagger.png]" alt="Swagger Notas" width="80%">
-  <img src="[LINK PARA docs/tag-controller-swagger.png]" alt="Swagger Tags" width="80%">
+  <img src="https://github.com/user-attachments/assets/08ce1e18-4fbc-4581-94d1-ef52fe893ed2" alt="Swagger Login" width="80%">
+  <img src="https://github.com/user-attachments/assets/8c7aaded-9711-4e1f-b25e-5fbcdc1added" alt="Swagger Usuário" width="80%">
+  <img src="https://github.com/user-attachments/assets/26f6520e-88bc-4530-8889-473f2de82846" alt="Swagger Notas" width="80%">
+  <img src="https://github.com/user-attachments/assets/a71be1f5-b3d9-4a4e-b5f1-d0ba250bcf79" alt="Swagger Tags" width="80%">
 </p>
 
 </details>

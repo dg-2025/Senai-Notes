@@ -11,26 +11,31 @@ import NotFound from './pages/NotFound'
 import RotaProtegida from './componentes/RotaProtegida'
 
 function App() {
+
+  // sempre limpa tudo ao abrir o site
+  localStorage.removeItem("token");
+  localStorage.removeItem("usuarioId");
+  localStorage.removeItem("usuarioNome");
+  localStorage.removeItem("usuarioEmail");
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rotas públicas acessíveis sem login */}
+
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Redireciona a rota raiz para o dashboard */}
         <Route path="/" element={<Navigate to="/login" />} />
 
-        {/* Rotas protegidas que só funcionam com token válido */}
         <Route element={<RotaProtegida />}>
           <Route path="/dashboard" element={<TelaNotas />} />
           <Route path="/settings" element={<TelaConfig />} />
         </Route>
 
-        {/* Rota de erro para caminhos inexistentes */}
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   )

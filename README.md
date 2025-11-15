@@ -151,10 +151,12 @@ A API foi 100% documentada com SpringDoc (OpenAPI) e está disponível publicame
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/08ce1e18-4fbc-4581-94d1-ef52fe893ed2" alt="Swagger Login" width="80%">
-  <img src="https://github.com/user-attachments/assets/8c7aaded-9711-4e1f-b25e-5fbcdc1added" alt="Swagger Usuário" width="80%">
+  <img src="https://github.com/user-attachments/assets/20334ea5-4f8c-44f4-b342-69273ea1f736" alt="Swagger Usuário" width="80%">
   <img src="https://github.com/user-attachments/assets/26f6520e-88bc-4530-8889-473f2de82846" alt="Swagger Notas" width="80%">
   <img src="https://github.com/user-attachments/assets/a71be1f5-b3d9-4a4e-b5f1-d0ba250bcf79" alt="Swagger Tags" width="80%">
 </p>
+
+
 
 </details>
 

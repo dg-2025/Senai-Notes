@@ -1,14 +1,12 @@
 import React from 'react'
 import './style.css'
-import { Plus, Image as ImageIcon } from 'lucide-react'
-import ImagemSegura from '../imagem-segura';
+import { Plus } from 'lucide-react'
 
 function ListaNotas({ notas, vizualisarNota, aoCriarNova }) {
 
   return (
     <div className="lista-notas-container">
 
-      {/* botão criar e texto introdutório */}
       <div className="area-cabecalho-lista">
         <button className="btn-criar" onClick={aoCriarNova}>
           <Plus size={20} />
@@ -20,41 +18,36 @@ function ListaNotas({ notas, vizualisarNota, aoCriarNova }) {
         </p>
       </div>
 
-      {/* lista com rolagem */}
       <div className="lista-scroll">
 
-        {/* lista vazia */}
         {notas.length === 0 && (
           <p className="lista-vazia">Nenhuma nota criada.</p>
         )}
 
-        {/* notas */}
         {notas.map((nota) => (
           <div
             key={nota.id}
             className="card-nota"
             onClick={() => vizualisarNota(nota)}
           >
-
-            {/* miniatura da nota */}
             <div className="area-img-miniatura">
-              {/* Troca a tag <img> pela <ImagemSegura> */}
-              <ImagemSegura
-                url={nota.imagem}
-                className="miniatura-nota"
-                alt=""
-              />
+              {nota.imagem ? (
+                <img
+                  src={nota.imagem}
+                  className="miniatura-nota"
+                  alt=""
+                />
+              ) : (
+                <div className="miniatura-nota miniatura-sem-imagem" />
+              )}
             </div>
 
-            {/* texto e informações */}
             <div className="info-nota">
-
               <h3 className="titulo-nota">
-                {nota.titulo || "Sem Título"}
+                {nota.titulo || 'Sem Título'}
               </h3>
 
               <div className="tags-nota">
-                {/* tags */}
                 {nota.tags.map((tag, index) => (
                   <span key={index} className="tag-pill">
                     {tag}

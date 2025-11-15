@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="[LINK PARA docs/Feather.svg]" width="100" alt="Logo Senai Notes">
+  <img src="<img width="1024" height="1024" alt="ChatGPT Image 14 de nov  de 2025, 23_52_29" src="https://github.com/user-attachments/assets/bd61ab8a-4f0e-48e4-8007-d8972d3dff79" />
+" width="100" alt="Logo Senai Notes">
 </p>
 
 <h1 align="center">
@@ -52,15 +53,18 @@ O design foi 100% baseado no Figma, implementado com temas Light e Dark Mode e t
   </thead>
   <tbody>
     <tr>
-      <td><img src="[LINK PARA docs/dashboard.jpg]" alt="Dashboard Light Mode"></td>
-      <td><img src="[LINK PARA docs/dashboard-noturno.jpg]" alt="Dashboard Dark Mode"></td>
+      <td><img width="1919" height="865" alt="dashboard-noturno" src="https://github.com/user-attachments/assets/18311e76-be88-4520-ae8d-4ffab0a52f9d" />
+ alt="Dashboard Light Mode"></td>
+      <td><img width="1919" height="865" alt="dashboard-noturno" src="https://github.com/user-attachments/assets/aac93c43-8ada-4091-bbd1-456154f1074d" />
+ alt="Dashboard Dark Mode"></td>
     </tr>
   </tbody>
 </table>
 
 ### Responsividade Mobile (Fiel ao Figma)
 <p align="center">
-  <img src="[LINK PARA docs/mobile-todas as telas.jpg]" alt="Demonstração Mobile" width="80%">
+  <img width="2156" height="1212" alt="mobile-todas as telas" src="https://github.com/user-attachments/assets/527c7089-af06-4d4f-ace9-9615ceca72e2" />
+ alt="Demonstração Mobile" width="80%">
 </p>
 
 ---
